@@ -70,8 +70,7 @@ export default function Header() {
         <Link href="/" className="text-2xl font-bold flex ml-6">
           <div className='w-7 h-7'>
             <Image
-              src={logo} alt='Logo'
-              objectFit='contain'/>
+              src={logo} alt='Logo'/>
           </div>
           <p className='ml-2'>CodePlease</p>
         </Link>
@@ -157,31 +156,31 @@ export default function Header() {
             href="/"
             className="hover:bg-secondary hover:text-white px-3 py-2 rounded transition-colors"
           >
-            Home
+            {t('Home')}
           </Link>
           <Link
             href="/problems"
             className="hover:bg-secondary hover:text-white px-3 py-2 rounded transition-colors"
           >
-            Problems
+            {t('Problems')}
           </Link>
-          <Link
-            href="/contest"
+          {/* <Link
+            href="/contests"
             className="hover:bg-secondary hover:text-white px-3 py-2 rounded transition-colors"
           >
-            Contest
-          </Link>
+            {t('Contests')}
+          </Link> */}
           <Link
             href="/leaderboard"
             className="hover:bg-secondary hover:text-white px-3 py-2 rounded transition-colors"
           >
-            Leaderboard
+            {t('Leaderboard')}
           </Link>
           <Link
-            href="/topic"
+            href="/topics"
             className="hover:bg-secondary hover:text-white px-3 py-2 rounded transition-colors"
           >
-            Topic
+            {t('Topics')}
           </Link>
           
           {/* Dark Mode Toggle and User Info in Burger Menu */}

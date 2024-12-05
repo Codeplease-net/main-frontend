@@ -95,10 +95,10 @@ function data(t: any) { return [
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold mb-12 text-center">{t('Object3.FeatureText')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[1, 2, 3].map((i) => (
+              {[1, 2].map((i) => (
                 <Card key={`contest-${i}`} className="bg-card">
                   <CardHeader>
-                    <CardTitle>Weekly Contest 1</CardTitle>
+                    <CardTitle>Weekly Contest</CardTitle>
                     <CardDescription>{t(`Object3.DateDescription${i}`)}</CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -106,7 +106,7 @@ function data(t: any) { return [
                     <p>{t(`Object3.AuthorDescription${i}`)}</p>
                   </CardContent>
                   <CardFooter>
-                    <Link href={`/contests/${i}`}>
+                    <Link href={'#'}>
                       <Button variant="outline">{t(`Object3.DetailText`)}</Button>
                     </Link>
                   </CardFooter>

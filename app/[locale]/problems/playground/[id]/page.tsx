@@ -1,6 +1,6 @@
 import PlayGroundComponent from '@/components/PlaygroundPage/PlayGroundPage'
 
-export default function PlayGroundPage({
+export default async function PlayGroundPage({
   params,
 }: {
   params: { id: string };  

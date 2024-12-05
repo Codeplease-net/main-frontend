@@ -41,7 +41,7 @@ const BrainIcon = () => (
 
 export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef(null);
   const [height, setHeight] = useState(0);
 
   useEffect(() => {
@@ -52,8 +52,8 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
   }, [ref]);
 
   const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start 0%", "end 50%"],
+    // target: containerRef,
+    // offset: ["start 0%", "end 50%"],
   });
 
   const heightTransform = useTransform(scrollYProgress, [0, 1], [0, height]);

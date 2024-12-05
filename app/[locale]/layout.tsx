@@ -45,12 +45,12 @@ export default async function RootLayout({children, params: {
         <title>CodePlease</title>
         <link
           rel="icon"
-          href="/icon?<generated>"
-          type="image/<generated>"
-          sizes="<generated>"/>
+          href="/icon.png"
+          type="image/png"
+          sizes="png"/>
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <NextIntlClientProvider messages={messages}>
+        <NextIntlClientProvider locale={locale} messages={messages}>
           <Header />
           {children}
         </NextIntlClientProvider>

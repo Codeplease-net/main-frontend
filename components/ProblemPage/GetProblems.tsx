@@ -17,7 +17,7 @@ export default async function getProblems(): Promise<Problem[] | { notFound: boo
   try {
     const problemsCollection = collection(db, "problems");
     const problemsSnapshot = await getDocs(problemsCollection);
-
+    
     // Handle the case where no problems are found
     if (problemsSnapshot.empty) {
       return Promise.resolve({

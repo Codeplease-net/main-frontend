@@ -1,8 +1,11 @@
-import Link from 'next/link'
 import SubmissionTable from '@/components/UserSubmissionPage/SubmissionTable'
 import { useTranslations } from 'next-intl'
 
-export default function SubmissionsPage() {
+export default function SubmissionsPage({
+  params,
+}: {
+  params: { id: string };  
+}) {
   const t = useTranslations('Profile')
   return (
     <div className="container mx-auto py-10">

@@ -100,7 +100,8 @@ function SubmissionDetails({ participant, problem, status, language, runtime, me
       date="2021-10-01"
       status={status}
       code={code}
-      passedTestcase="6/6"
+      passedTestcase={6}
+      totalTestcase={6}
       runtime={runtime}
       memory={memory}
       language={language}

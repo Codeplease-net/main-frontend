@@ -149,7 +149,11 @@ const activityData = [
   // ... more data
 ];
 
-export default function Profile() {
+export default function Profile({
+  params,
+}: {
+  params: { id: string };  
+}) {
   const t = useTranslations('Profile')
   return (
     <div className="bg-background text-white p-6">

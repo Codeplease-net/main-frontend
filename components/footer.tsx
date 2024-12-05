@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 export default function Footer() {
   const t = useTranslations("Footer");
   return (
-    <footer className="bg-background py-12 border-t border-border">
+    <footer className="bg-background pt-8 pb-6 border-t border-border">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div>
@@ -108,7 +108,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="mt-8 pt-8 border-t border-border text-center flex justify-center">
+        <div className="mt-6 pt-6 border-t border-border text-center flex justify-center">
           <p>Copyright &copy; 2024 CodePlease</p> <p className="mx-2">|</p>{" "}
           <p>All rights reserved.</p>
         </div>

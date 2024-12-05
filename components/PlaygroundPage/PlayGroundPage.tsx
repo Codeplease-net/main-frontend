@@ -123,9 +123,9 @@ export default function PlaygroundPage( {id}: {id: string} ) {
     const fetchproblems = async () => {
       try {
         const result = await fetchProblemById(parseInt(id));
-        const description = await fetchProblemTextById(parseInt(id), "description");
-        const title = await fetchProblemTextById(parseInt(id), "title");
-        const solutionDescription = await fetchProblemTextById(parseInt(id), "solution");
+        const description = await fetchProblemTextById(parseInt(id), "description", locale);
+        const title = await fetchProblemTextById(parseInt(id), "title", locale);
+        const solutionDescription = await fetchProblemTextById(parseInt(id), "solution", locale);
         if (!result) {
           throw new Error("Fetched data is not an array");
         }
@@ -182,10 +182,10 @@ export default function PlaygroundPage( {id}: {id: string} ) {
           <Suspense fallback={<div>Loading...</div>}>
             <ProblemDescription
               problemNumber={problem?.id || 0}
-              title={problem?.title[locale] || ''}
+              title={problem?.title || ''}
               difficulty={problem?.difficulty === 1 ? 'Easy' : problem?.difficulty === 2 ? 'Medium' : 'Hard'}
-              description={problem?.description[locale] || ''}
-              solutionDescription={problem?.solutionDescription[locale] || ''}
+              description={problem?.description || ''}
+              solutionDescription={problem?.solutionDescription || ''}
               sampleCode={problem?.sampleCode || ''}
               acceptance={problem?.acceptance || 0}
               mySubmissions={userSubmissions}

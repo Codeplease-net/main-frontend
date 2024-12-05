@@ -18,6 +18,8 @@ import { Button } from "../ui/button"
 import PaginationBar from "./Pagination"
 import getProblems from "./GetProblems"
 import { useTranslations } from "next-intl";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/api/Readfirebase";
 interface Problem {
     id: number;
     status: 'completed' | 'not-started';
@@ -45,6 +47,7 @@ export default function ProblemSetTable({currentPage, category}: {currentPage: n
         if (!Array.isArray(result)) {
           throw new Error("Fetched data is not an array");
         }
+        console.log(result)
         setProblems(result);
       }
       catch (err) {
@@ -53,6 +56,7 @@ export default function ProblemSetTable({currentPage, category}: {currentPage: n
       }
     }
     fetchProblems();
+    
   }, [])
 
   const [searchTerm, setSearchTerm] = React.useState('')
