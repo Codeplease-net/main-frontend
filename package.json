@@ -37,6 +37,7 @@
     "i18next-resources-to-backend": "^1.2.1",
     "ionicons": "^7.4.0",
     "lucide-react": "^0.445.0",
+    "monaco-editor": "^0.52.0",
     "next": "14.2.13",
     "next-i18n-router": "^5.5.1",
     "next-i18next": "^15.4.0",
