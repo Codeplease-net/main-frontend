@@ -1,4 +1,7 @@
 {
   "/icon.png/route": "app/icon.png/route.js",
-  "/[locale]/page": "app/[locale]/page.js"
+  "/[locale]/problems/page": "app/[locale]/problems/page.js",
+  "/[locale]/problems/playground/[id]/page": "app/[locale]/problems/playground/[id]/page.js",
+  "/[locale]/topics/page": "app/[locale]/topics/page.js",
+  "/[locale]/leaderboard/page": "app/[locale]/leaderboard/page.js"
 }

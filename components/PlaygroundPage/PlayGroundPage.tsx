@@ -6,7 +6,6 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import ProblemDescription from '@/components/PlaygroundPage/DescriptionBoard';
-import {fetchProblemById, fetchProblemTextById} from '@/components/PlaygroundPage/GetProblemById';
 import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
 import CodeEditor from '@/components/PlaygroundPage/CodeEditor';
 import { Suspense, useEffect, useState } from 'react';
@@ -15,6 +14,7 @@ import SubmissionDetail from "@/components/ui/SubmissionDetail";
 import { Undo2 } from 'lucide-react';
 import { SubmissionDetailProps } from "./Props";
 import { useLocale } from "next-intl";
+import { fetchProblemById, fetchProblemTextById } from "./GetProblemById";
 
 interface Problem {
   id: number;
@@ -126,6 +126,7 @@ export default function PlaygroundPage( {id}: {id: string} ) {
         const description = await fetchProblemTextById(parseInt(id), "description", locale);
         const title = await fetchProblemTextById(parseInt(id), "title", locale);
         const solutionDescription = await fetchProblemTextById(parseInt(id), "solution", locale);
+        const sampleCode = await fetchProblemTextById(parseInt(id), "solution", "code");
         if (!result) {
           throw new Error("Fetched data is not an array");
         }
@@ -138,7 +139,7 @@ export default function PlaygroundPage( {id}: {id: string} ) {
           status: result.status,
           description: description,
           solutionDescription: solutionDescription,
-          sampleCode: solutionDescription?.code
+          sampleCode
         };
         setProblem(problem);
       } catch (err) {

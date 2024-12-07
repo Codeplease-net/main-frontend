@@ -10,6 +10,26 @@
       "static/chunks/main-app.js",
       "static/css/app/[locale]/layout.css",
       "static/chunks/app/[locale]/layout.js"
+    ],
+    "/[locale]/problems/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/[locale]/problems/page.js"
+    ],
+    "/[locale]/problems/playground/[id]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/[locale]/problems/playground/[id]/page.js"
+    ],
+    "/[locale]/leaderboard/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/[locale]/leaderboard/page.js"
+    ],
+    "/[locale]/topics/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/[locale]/topics/page.js"
     ]
   }
 }

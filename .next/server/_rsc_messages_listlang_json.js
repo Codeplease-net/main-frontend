@@ -17,7 +17,7 @@ exports.modules = {
   \********************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"en":"🇺🇸 English","es":"🇪🇸 Español","fr":"🇫🇷 Français","hi":"🇮🇳 हिंदी","de":"🇩🇪 Deutsch","zh-CN":"🇨🇳 简体中文","zh-TW":"🇹🇼 繁體中文","ar":"🇸🇦 العربية","pt":"🇧🇷 Português","ru":"🇷🇺 Русский","ja":"🇯🇵 日本語","ko":"🇰🇷 한국어","it":"🇮🇹 Italiano","pl":"🇵🇱 Polski","th":"🇹🇭 ไทย","vi":"🇻🇳 Tiếng Việt","id":"🇮🇩 Bahasa Indonesia"}');
+module.exports = /*#__PURE__*/JSON.parse('{"en":"English","es":"Español","fr":"Français","hi":"हिंदी","de":"Deutsch","zh-CN":"中文","zh-TW":"繁體中文","ru":"Русский","ja":"日本語","ko":"한국어","it":"Italiano","pl":"Polski","th":"ไทย","vi":"Tiếng Việt","id":"Bahasa Indonesia"}');
 
 /***/ })
 
