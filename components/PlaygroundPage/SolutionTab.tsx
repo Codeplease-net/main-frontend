@@ -1,8 +1,10 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
-import BetterMathJax from "./BetterMathJax";
+import BetterMathJax from "../ui/BetterMathJax";
 import { MonacoWrapper } from "./AutoFitEditor";
 import { useTranslations } from "next-intl";
+import { decryptText } from "@/api/toStoreInFirebase";
+import { RenderMathJaxText } from "../ui/RenderMathJaxText";
 
 interface SolutionDescriptionProps {
   description: string;
@@ -14,7 +16,6 @@ const renderLatex = (text: string) => {
   return <BetterMathJax latexContent={text}></BetterMathJax>;
 };
 
-const encryptedString = "WEQEWQEDJHSJGbnbxcmnxbcvxcvjkasdkqru7821y4jbnqfbq";
 
 const formatDescription = (description: string, t: any) => {
   if (!description) {
@@ -22,19 +23,7 @@ const formatDescription = (description: string, t: any) => {
   }
 
   return (
-    <ul className="list-disc mt-4 h-full">
-      {description.split("\\\\").map((paragraph, i) => {
-        if (paragraph.startsWith("\\bullet")) {
-          return (
-            <li key={i} className="ml-8">
-              {renderLatex(paragraph.replace("\\bullet", ""))}
-            </li>
-          );
-        } else {
-          return <div key={i}>{renderLatex(paragraph)}</div>;
-        }
-      })}
-    </ul>
+    <RenderMathJaxText content={decryptText(description)}/>
   );
 };
 
@@ -55,11 +44,7 @@ export default function SolutionDescription({
         </div>
         <MonacoWrapper
           className="mt-4"
-          content={code
-            .replaceAll("\\\\n", encryptedString)
-            .replaceAll("\\n", "\n")
-            .replaceAll(encryptedString, "\\n")
-            .replaceAll("\\t", "\t")}
+          content={decryptText(code)}
           options={{
             readOnly: true,
             scrollBeyondLastLine: false,

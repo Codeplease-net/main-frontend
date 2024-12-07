@@ -97,7 +97,12 @@
     "Previous": "Previous",
     "Next": "Next",
     "Search problems": "Search problems",
-    "Search category": "Search category"
+    "Search category": "Search category",
+    "Beginner": "Beginner",
+    "Intermediate": "Intermediate", 
+    "Moderate": "Moderate", 
+    "Very Hard": "Very Hard",
+    "Expert": "Expert"
   },
   "Contests": {
     "View Details": "View Details",
