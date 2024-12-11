@@ -2,6 +2,17 @@ import { splitString } from "../PolygonPage/recenter";
 import BetterMathJax from "./BetterMathJax";
 import { Example } from "./Example";
 
+function transformText(input: string): string {
+  // Replace any occurrence of \t with 1t
+  input = input.replace(/\\t/, '\\1t');
+  
+  // Then perform the transformation for the rest of the cases
+  return input.replace(/\$\\(\d+)t\$(.*)/, (_, number, remainingText) => {
+      const marginLeft = 32 * parseInt(number, 10);  // Calculate margin-left
+      return `$\\style{margin-left: ${marginLeft}px}{}$ ${remainingText.trim()}`;
+  });
+}
+
 export function RenderMathJaxText({ content }: { content: string }) {
   return content.split("\n\n").map((text, id) => (
     <div className="mt-2" key={id}>
@@ -15,7 +26,7 @@ export function RenderMathJaxText({ content }: { content: string }) {
                 <BetterMathJax latexContent={t.substring(6, t.length)} />
               </div>
             );
-          return <BetterMathJax latexContent={t} key={id2} />;
+          return <BetterMathJax latexContent={transformText(t)} key={id2} />;
         })
       )}
     </div>

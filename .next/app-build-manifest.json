@@ -1,9 +1,9 @@
 {
   "pages": {
-    "/[locale]/polygon/page": [
+    "/[locale]/problems/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/polygon/page.js"
+      "static/chunks/app/[locale]/problems/page.js"
     ],
     "/[locale]/layout": [
       "static/chunks/webpack.js",
@@ -11,30 +11,20 @@
       "static/css/app/[locale]/layout.css",
       "static/chunks/app/[locale]/layout.js"
     ],
-    "/[locale]/page": [
+    "/[locale]/polygon/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/page.js"
-    ],
-    "/[locale]/problems/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/problems/page.js"
+      "static/chunks/app/[locale]/polygon/page.js"
     ],
     "/[locale]/problems/playground/[id]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/[locale]/problems/playground/[id]/page.js"
     ],
-    "/[locale]/developer-team/page": [
+    "/[locale]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/developer-team/page.js"
-    ],
-    "/[locale]/topics/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/topics/page.js"
+      "static/chunks/app/[locale]/page.js"
     ]
   }
 }

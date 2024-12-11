@@ -5,17 +5,17 @@ export function Example({ splitText }: { splitText: string[] }) {
   return (
     <div className="space-y-2 mt-4">
       <h3 className="text-xl font-semibold">{splitText[0]}</h3>
-      <div className="grid grid-cols-2 gap-4 p-2 rounded-md">
+      <div className="grid grid-cols-2 gap-4 rounded-md">
         <Card className="bg-secondary/50">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-base font-bold">
+            <CardTitle className="text-base font-bold ">
               {splitText[1]}
             </CardTitle>
             <CopyButton content={splitText[2]} />
           </CardHeader>
           <div className="w-full bg-secondary/50 h-0.5"></div>
           <CardContent className="mt-4">
-            <div className="text-sm font-mono whitespace-pre-wrap">
+            <div className="text-sm font-mono whitespace-pre-wrap break-words">
               {splitText[2]}
             </div>
           </CardContent>
@@ -29,7 +29,7 @@ export function Example({ splitText }: { splitText: string[] }) {
           </CardHeader>
           <div className="w-full bg-secondary/50 h-0.5"></div>
           <CardContent className="mt-4">
-            <div className="text-sm font-mono whitespace-pre-wrap">
+            <div className="text-sm font-mono whitespace-pre-wrap break-words">
               {splitText[4]}
             </div>
           </CardContent>

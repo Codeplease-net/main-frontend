@@ -20,6 +20,7 @@ import getProblems from "./GetProblems";
 import { useTranslations } from "next-intl";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/api/Readfirebase";
+import DifficultyBox from "../ui/difficulty";
 interface Problem {
   id: number;
   status: "completed" | "not-started";
@@ -28,20 +29,6 @@ interface Problem {
   difficulty: number;
   acceptance: number;
   description: string;
-}
-
-const difficultyColors = [
-  "text-teal-500",    // Beginner (Very Easy)
-  "text-lime-600",    // Easy
-  "text-amber-500",   // Intermediate (Medium)
-  "text-orange-600",  // Moderate
-  "text-rose-600",    // Hard
-  "text-red-700",     // Very Hard
-  "text-indigo-700"   // Expert (Challenge)
-];
-
-function difficulty(): { [key: number]: string } {
-  return { 1: "Beginer", 2: "Easy", 3: "Intermediate", 4: "Moderate", 5: "Hard", 6: "Very Hard", 7: "Expert" };
 }
 
 export default function ProblemSetTable({
@@ -201,9 +188,9 @@ export default function ProblemSetTable({
               >
                 <TableCell>
                   {problem.status === "completed" ? (
-                    <CheckCircle2 className="h-5 w-5 text-green-500" />
+                    <CheckCircle2 className="h-5 w-5 text-green-500 ml-2.5" />
                   ) : (
-                    <Circle className="h-5 w-5 text-muted-foreground" />
+                    <Circle className="h-5 w-5 text-muted-foreground ml-2.5" />
                   )}
                 </TableCell>
                 <TableCell className="font-medium">{problem.title}</TableCell>
@@ -215,14 +202,7 @@ export default function ProblemSetTable({
                   ))}
                 </TableCell>
                 <TableCell className="text-center">
-                  <Badge
-                    variant={
-                      "outline"
-                    }
-                    className={(problem.difficulty >= 1 && problem.difficulty <= 7) ? difficultyColors[problem.difficulty-1] : ""}
-                  >
-                    {t(difficulty()[problem.difficulty])}
-                  </Badge>
+                  <DifficultyBox difficulty={problem.difficulty}/>
                 </TableCell>
                 <TableCell className="text-center">
                   {problem.acceptance != undefined
