@@ -313,5 +313,17 @@
     "Wrong Answer": "Wrong Answer",
     "Compile Error": "Compile Error",
     "View Details": "View Details"
+  },
+  "Difficulty":{
+    "Beginner": "Beginner",
+    "Easy": "Easy",
+    "Intermediate": "Intermediate",
+    "Challenging": "Challenging",
+    "Hard": "Hard",
+    "Very Hard": "Very Hard",
+    "Expert": "Expert"
+  },
+  "NewBox":{
+    "New": "New"
   }
 }

@@ -49,7 +49,7 @@ export default async function RootLayout({children, params: {
           type="image/png"
           sizes="png"/>
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Header />
           {children}

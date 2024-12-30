@@ -3,7 +3,6 @@
 import * as React from "react";
 import { useRouter } from "@/i18n/routing";
 import { CheckCircle2, Circle, ArrowUpDown } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import {
@@ -18,17 +17,17 @@ import { Button } from "../ui/button";
 import PaginationBar from "./Pagination";
 import getProblems from "./GetProblems";
 import { useTranslations } from "next-intl";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "@/api/Readfirebase";
 import DifficultyBox from "../ui/difficulty";
+import CategoryBadge from "../ui/category";
+import NewBox from "../ui/newBox";
+
 interface Problem {
-  id: number;
+  id: string;
   status: "completed" | "not-started";
-  title?: any;
+  displayTitle: string;
   category: string;
   difficulty: number;
   acceptance: number;
-  description: string;
 }
 
 export default function ProblemSetTable({
@@ -48,7 +47,6 @@ export default function ProblemSetTable({
         if (!Array.isArray(result)) {
           throw new Error("Fetched data is not an array");
         }
-        console.log(result);
         setProblems(result);
       } catch (err) {
         console.error(err);
@@ -63,7 +61,7 @@ export default function ProblemSetTable({
   const [sortedBy, setSortedBy] = React.useState("");
   const [showedproblems, setShowedProblems] = React.useState<Problem[]>([]);
   const page = currentPage;
-  const NUMBER_OF_PROBLEMS = 10;
+  const NUMBER_OF_PROBLEMS = 15;
 
   const router = useRouter();
   const handleClick = (e: React.MouseEvent<HTMLTableRowElement>): void => {
@@ -74,7 +72,7 @@ export default function ProblemSetTable({
 
     // Filter problems based on search term and category
     const filteredProblems = problems.filter((problem) => {
-      const matchesTitle = problem.title
+      const matchesTitle = problem.displayTitle
         ?.toLowerCase()
         .includes(searchTerm.toLowerCase());
       const matchesCategory = searchCategory
@@ -143,7 +141,9 @@ export default function ProblemSetTable({
         <Table>
           <TableHeader>
             <TableRow className="bg-muted/50">
-              <TableHead className="w-[100px]">{t("Status")}</TableHead>
+              <TableHead className="w-[70px]">
+                <div className="ml-1">{t("Status")}</div>
+              </TableHead>
               <TableHead>{t("Title")}</TableHead>
               <TableHead>{t("Category")}</TableHead>
               <TableHead className="text-center">
@@ -179,36 +179,30 @@ export default function ProblemSetTable({
           <TableBody>
             {showedproblems.map((problem, index) => (
               <TableRow
-                id={String(problem.id)}
+                id={problem.id}
                 key={index}
-                className={`cursor-pointer ${
-                  index % 2 === 0 ? "" : "bg-muted/50"
-                }`}
+                className={`cursor-pointer`}
                 onClick={handleClick}
               >
                 <TableCell>
                   {problem.status === "completed" ? (
-                    <CheckCircle2 className="h-5 w-5 text-green-500 ml-2.5" />
+                    <CheckCircle2 className="h-5 w-5 text-green-500 ml-3.5" />
                   ) : (
-                    <Circle className="h-5 w-5 text-muted-foreground ml-2.5" />
+                    <Circle className="h-5 w-5 text-muted-foreground ml-3.5" />
                   )}
                 </TableCell>
-                <TableCell className="font-medium">{problem.title}</TableCell>
+                <TableCell className="font-medium">{problem.displayTitle}</TableCell>
                 <TableCell>
-                  {problem.category.split(",").map((text) => (
-                    <Badge className="mr-2" variant={"outline"}>
-                      {text}
-                    </Badge>
-                  ))}
+                  <CategoryBadge category={problem.category}/>
                 </TableCell>
                 <TableCell className="text-center">
                   <DifficultyBox difficulty={problem.difficulty}/>
                 </TableCell>
                 <TableCell className="text-center">
-                  {problem.acceptance != undefined
-                    ? problem.acceptance.toFixed(2)
-                    : ""}
-                  %
+                  {(problem.acceptance != undefined && problem.acceptance > 0)
+                    ? `${problem.acceptance.toFixed(1)} %`
+                    : <NewBox/>
+                  }
                 </TableCell>
               </TableRow>
             ))}
@@ -217,7 +211,7 @@ export default function ProblemSetTable({
       </div>
       <PaginationBar
         currentPage={page}
-        maxPages={Math.ceil(problems.length / 10)}
+        maxPages={Math.ceil(problems.length / NUMBER_OF_PROBLEMS)}
       />
     </Card>
   );

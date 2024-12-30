@@ -16,7 +16,7 @@ function data(t: any) { return [
             <div className="container mx-auto px-4">
               <h2 className="text-3xl font-bold mb-12 text-center">{t('Object1.FeatureText')}</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <Card className="bg-card">
+                <Card className="bg-card border">
                   <CardHeader>
                     <CardTitle className="flex items-center">
                       <Code className="mr-2" />
@@ -27,7 +27,7 @@ function data(t: any) { return [
                     <p>{t('Object1.TextDescription1')}</p>
                   </CardContent>
                 </Card>
-                <Card className="bg-card">
+                <Card className="bg-card border">
                   <CardHeader>
                     <CardTitle className="flex items-center">
                       <Trophy className="mr-2" /> 
@@ -38,7 +38,7 @@ function data(t: any) { return [
                     <p>{t('Object1.TextDescription2')}</p>
                   </CardContent>
                 </Card>
-                <Card className="bg-card">
+                <Card className="bg-card border">
                   <CardHeader>
                     <CardTitle className="flex items-center">
                       <Users className="mr-2" /> 
@@ -65,7 +65,7 @@ function data(t: any) { return [
             <h2 className="text-3xl font-bold mb-12 text-center">{t('Object2.FeatureText')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[1, 2, 3].map((i) => (
-                <Card key={`problem-${i}`} className="bg-card">
+                <Card key={`problem-${i}`} className="bg-card border">
                   <CardHeader>
                     <CardTitle>{t(`Object2.ProblemTitle${i}`)} </CardTitle>
                     <CardDescription>{t(`Object2.TextObject${i}`)}</CardDescription>
@@ -96,7 +96,7 @@ function data(t: any) { return [
             <h2 className="text-3xl font-bold mb-12 text-center">{t('Object3.FeatureText')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[1, 2].map((i) => (
-                <Card key={`contest-${i}`} className="bg-card">
+                <Card key={`contest-${i}`} className="bg-card border">
                   <CardHeader>
                     <CardTitle>Weekly Contest</CardTitle>
                     <CardDescription>{t(`Object3.DateDescription${i}`)}</CardDescription>

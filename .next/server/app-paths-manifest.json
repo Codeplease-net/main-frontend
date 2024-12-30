@@ -1,6 +1,1 @@
-{
-  "/icon.png/route": "app/icon.png/route.js",
-  "/[locale]/problems/page": "app/[locale]/problems/page.js",
-  "/[locale]/polygon/page": "app/[locale]/polygon/page.js",
-  "/[locale]/problems/playground/[id]/page": "app/[locale]/problems/playground/[id]/page.js"
-}
+{}

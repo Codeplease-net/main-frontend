@@ -1,16 +1,15 @@
 "use server"
 
 import { db } from "@/api/Readfirebase";
-import { doc, collection, getDocs, getDoc, documentId } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 
 interface Problem {
-    id: number;
+    id: string;
     status: 'completed' | 'not-started';
-    title: any;
+    displayTitle: any;
     category: string;
     difficulty: number;
     acceptance: number;
-    description: string;
   }
 
 export default async function getProblems(): Promise<Problem[] | { notFound: boolean }> {
@@ -29,13 +28,12 @@ export default async function getProblems(): Promise<Problem[] | { notFound: boo
     const problems: Problem[] = problemsSnapshot.docs.map((document) => {
       const data = document.data();
       return {
-        id: parseInt(document.id), // Use the Firestore document ID as the 'id'
+        id: document.id, // Use the Firestore document ID as the 'id'
         status: data.status,
-        title: data.title,
+        displayTitle: data.displayTitle,
         category: data.category,
         difficulty: data.difficulty,
-        acceptance: data.acceptance,
-        description: data.description,
+        acceptance: ((data.totalSubmissions != undefined && data.totalSubmissions > 0) ? data.acceptedSubmissions / data.totalSubmissions : 0) * 100,
       };
     });
     

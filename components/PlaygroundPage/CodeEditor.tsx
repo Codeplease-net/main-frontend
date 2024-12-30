@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import Editor from '@monaco-editor/react';
-import { Fullscreen, Play } from 'lucide-react';
+import { Fullscreen, Upload } from 'lucide-react';
 
 const comment = {
   python: "#Have fun coding",
@@ -61,18 +61,28 @@ export default function CodeEditor({ onclickFullscreen, submitCode }: {onclickFu
             </SelectContent>
           </Select>
         </div>
-        <div className='flex'>
-          <Fullscreen className="mr-2 cursor-pointer" onClick={() => onclickFullscreen(2)} />
-          <Play className="mr-2 cursor-pointer" onClick={handleSubmit} />
+        <div className='flex mr-2'>
+          <div className='flex mr-0.5 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 cursor-pointer rounded-l py-2 px-3' onClick={handleSubmit}>
+            <Upload className='mr-3'/>
+            <div>Submit</div>
+          </div>
+          <div className='flex border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 cursor-pointer rounded-r p-2' onClick={() => onclickFullscreen(2)}>
+            <Fullscreen />
+          </div>
         </div>
         {/* Code editor */}
       </div>  
-      <div translate="no" className='h-full'>
+      <div translate="no" className='h-full mt-1 ml-2 mr-4'>
         <Editor
-          height="100%"
+          height="90%"
           theme={theme}
           language={language}
           value={comment[language]}
+          options={{
+            minimap: {
+              enabled: false,
+            },
+          }}
           onMount={(editor) => (editorRef.current = editor)}
           />
       </div>

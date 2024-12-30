@@ -14,18 +14,17 @@ import SubmissionDetail from "@/components/ui/SubmissionDetail";
 import { Undo2 } from 'lucide-react';
 import { SubmissionDetailProps } from "./Props";
 import { useLocale } from "next-intl";
-import { fetchProblemById, fetchProblemTextById } from "./GetProblemById";
+import { fetchProblemById } from "./GetProblemById";
 
 interface Problem {
-  id: number;
-  title: any;
+  id: string;
+  title: string;
   category: string;
   difficulty: number;
   acceptance: number;
   status: string;
-  description: any;
-  solutionDescription: any;
-  sampleCode: string
+  description: string;
+  solution: string;
 }
 
 interface submissionProps{
@@ -122,26 +121,25 @@ export default function PlaygroundPage( {id}: {id: string} ) {
   useEffect(() => {
     const fetchproblems = async () => {
       try {
-        const result = await fetchProblemById(parseInt(id));
-        const description = await fetchProblemTextById(parseInt(id), "description", locale);
-        const title = await fetchProblemTextById(parseInt(id), "title", locale);
-        const solutionDescription = await fetchProblemTextById(parseInt(id), "solution", locale);
-        const sampleCode = await fetchProblemTextById(parseInt(id), "solution", "code");
+                
+        const startTime = performance.now()
+        const result = await fetchProblemById(id);
         if (!result) {
           throw new Error("Fetched data is not an array");
         }
         const problem = {
-          id: parseInt(id),
-          title: title,
+          id,
           category: result.category,
           difficulty: result.difficulty,
           acceptance: result.acceptance,
           status: result.status,
-          description: description,
-          solutionDescription: solutionDescription,
-          sampleCode
+          title: result.title[locale],
+          description: result.description[locale],
+          solution: result.solution[locale],
         };
         setProblem(problem);
+        const endTime = performance.now()
+          console.log(`Took data from firebase took ${endTime - startTime} milliseconds`)
       } catch (err) {
         console.error(err);
         return;
@@ -173,7 +171,7 @@ export default function PlaygroundPage( {id}: {id: string} ) {
   };
 
   return (
-    <div style={{ height: '90vh' }}>
+    <div style={{ height: '90.5vh' }}>
       <ResizablePanelGroup
         direction={isMobile ? 'vertical' : 'horizontal'}
         className="h-full w-full"
@@ -182,12 +180,11 @@ export default function PlaygroundPage( {id}: {id: string} ) {
         <ResizablePanel defaultSize={50} style={getPanelStyle(1)} className='p-2'>
           <Suspense fallback={<div>Loading...</div>}>
             <ProblemDescription
-              problemNumber={problem?.id || 0}
               title={problem?.title || ''}
-              difficulty={problem?.difficulty === 1 ? 'Easy' : problem?.difficulty === 2 ? 'Medium' : 'Hard'}
+              difficulty={problem?.difficulty || 1}
               description={problem?.description || ''}
-              solutionDescription={problem?.solutionDescription || ''}
-              sampleCode={problem?.sampleCode || ''}
+              category={problem?.category || ''}
+              solutionDescription={problem?.solution || ''}
               acceptance={problem?.acceptance || 0}
               mySubmissions={userSubmissions}
               allSubmissions={allSubmissions}
@@ -204,8 +201,10 @@ export default function PlaygroundPage( {id}: {id: string} ) {
         <ResizablePanel defaultSize={50}  style={getPanelStyle(2)} >
           <div className="w-full h-full m-2">
             {  displaySubmission ?
-              <>
-                <Undo2 className="absolute bg-primary w-8 h-8 rounded-ee-lg cursor-pointer" onClick={() => (setDisplaySubmission(undefined))}/>
+              <div>
+                <div className="cursor-pointer ml-6 mt-4 -mb-2 hover:text-white/80" onClick={() => (setDisplaySubmission(undefined))}>
+                  <div>⬅ Code Editor</div>
+                </div>
                 <SubmissionDetail 
                   id={displaySubmission.id}
                   date={displaySubmission.date}
@@ -217,13 +216,13 @@ export default function PlaygroundPage( {id}: {id: string} ) {
                   memory={displaySubmission.memory}
                   language={displaySubmission.language}
                   /> 
-              </>
+              </div>
                 : 
                 /* Code Editor Panel */
                 <CodeEditor
-                submitCode={submitCode}
-                onclickFullscreen={onclickFullscreen}
-                />}
+                  submitCode={submitCode}
+                  onclickFullscreen={onclickFullscreen}/>
+                }
           </div>
         </ResizablePanel>
       </ResizablePanelGroup>

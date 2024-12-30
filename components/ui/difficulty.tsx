@@ -27,7 +27,7 @@ export function isDifficultyType(value: any): value is DifficultyTypes {
 }
 
 export default function DifficultyBox({difficulty}: {difficulty: number}){
-  const t = useTranslations('Box')
+  const t = useTranslations('Difficulty')
   return <Badge variant="outline" className={colors[isDifficultyType(difficulties[difficulty]) ? difficulties[difficulty] : "Easy"]}>
   {t(difficulties[difficulty])}
 </Badge>

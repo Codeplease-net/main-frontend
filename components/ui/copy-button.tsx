@@ -33,13 +33,13 @@ export default function CopyButton({ content }: { content: string }) {
             aria-label="Copy"
             variant="ghost"
             size="icon"
-            className="size-6"
+            className="size-7"
             onClick={copyToClipboard}
           >
             {copied ? (
-              <CheckmarkIcon className="size-4" />
+              <CheckmarkIcon className="size-5" />
             ) : (
-              <CopyIcon className="size-4 fill-muted-foreground transition-colors hover:fill-foreground" />
+              <CopyIcon className="size-5 fill-muted-foreground transition-colors hover:fill-foreground" />
             )}
           </Button>
         </TooltipTrigger>

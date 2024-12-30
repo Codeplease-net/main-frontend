@@ -16,15 +16,19 @@ import {
 } from './ui/dropdown-menu';
 import logo from "../public/logo.png"
 import Image from 'next/image'
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import LocaleSwitcher from './ui/changeLocale';
+import { usePathname } from 'next/navigation';
 
 export default function Header() {
   const t = useTranslations('Header');
+  const pathName = usePathname();
+  const locale = useLocale()
   const [isLoginVisible, setIsLoginVisible] = useState(false);
   const [Lightmode, setLightmode] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const auth = getAuth();
@@ -65,25 +69,30 @@ export default function Header() {
   };
 
   return (
-    <header className="border-b p-4 relative">
+    <header className="border-b relative p-4">
       <nav className="flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold flex ml-6">
+        <Link href="/" className="text-2xl font-bold flex ml-6 align-bottom">
           <div className='w-7 h-7'>
             <Image
               src={logo} alt='Logo'/>
           </div>
-          <p className='ml-2'>CodePlease</p>
+          odePlease
         </Link>
-        <div className="hidden md:flex space-x-4 items-center">
+        <div className="hidden md:flex items-center">
           <Link
             href="/"
-            className="hover:bg-secondary hover:text-white px-3 py-2 rounded transition-colors"
-          >
-            {t('Home')}
+            className={`text-lg hover:bg-secondary rounded-md px-3 h-12 hover:text-primary flex items-center transition-colors ${pathName == `/${locale}` ? 'text-primary': 'text-gray-500'}`}
+            onMouseEnter={() => setHoveredIndex(1)}
+            onMouseLeave={() => setHoveredIndex(null)}
+            >
+              {t('Home')}
           </Link>
+          <div className={`bg-gray-500 w-[0.05vw] h-[2vh] ${hoveredIndex == 1 || hoveredIndex == 2 ? 'opacity-0' : null}`}/>
           <Link
             href="/problems"
-            className="hover:bg-secondary hover:text-white px-3 py-2 rounded transition-colors"
+            className={`text-lg hover:bg-secondary rounded-md px-3 h-12 hover:text-primary flex items-center transition-colors ${pathName.includes('problems') ? 'text-primary': 'text-gray-500'}`}
+            onMouseEnter={() => setHoveredIndex(2)}
+            onMouseLeave={() => setHoveredIndex(null)}
           >
             {t('Problems')}
           </Link>
@@ -93,15 +102,21 @@ export default function Header() {
           >
             {t('Contests')}
           </Link> */}
+          <div className={`bg-gray-500 w-[0.05vw] h-[2vh] ${hoveredIndex == 2 || hoveredIndex == 3 ? 'opacity-0' : null}`}/>
           <Link
             href="/leaderboard"
-            className="hover:bg-secondary hover:text-white px-3 py-2 rounded transition-colors"
+            className={`text-lg hover:bg-secondary rounded-md px-3 h-12 hover:text-primary flex items-center transition-colors ${pathName.includes('leaderboard') ? 'text-primary': 'text-gray-500'}`}
+            onMouseEnter={() => setHoveredIndex(3)}
+            onMouseLeave={() => setHoveredIndex(null)}
           >
-            {t('Leaderboard')}
+            {t('Leaderboard')} 
           </Link>
+          <div className={`bg-gray-500 w-[0.05vw] h-[2vh] ${hoveredIndex == 3 || hoveredIndex == 4 ? 'opacity-0' : null}`}/>
           <Link
             href="/topics"
-            className="hover:bg-secondary hover:text-white px-3 py-2 rounded transition-colors"
+            className={`text-lg hover:bg-secondary rounded-md px-3 h-12 hover:text-primary flex items-center transition-colors ${pathName.includes('topics') ? 'text-primary': 'text-gray-500'}`}
+            onMouseEnter={() => setHoveredIndex(4)}
+            onMouseLeave={() => setHoveredIndex(null)}
           >
             {t('Topics')}
           </Link>
