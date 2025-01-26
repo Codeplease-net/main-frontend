@@ -17,7 +17,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import SubmissionDetail from "@/components/ui/SubmissionDetail";
+import SubmissionDetail from "@/components/PlaygroundPage/SubmissionDetail";
 import { useTranslations } from 'next-intl'
 
 interface SubmissionDetailProps {

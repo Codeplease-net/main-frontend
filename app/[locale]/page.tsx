@@ -1,4 +1,3 @@
-// page.tsx
 import SpotlightPreview from "@/components/Homepage/Spotlight";
 import TimeScroll from "@/components/Homepage/TimeLine";
 import BottomSection from "@/components/Homepage/BottomSection";

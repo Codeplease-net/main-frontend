@@ -4,9 +4,7 @@ import TermsAndConditions from "@/components/TermsAndConditionsPage/TermsAndCond
 export default function TermsAndConditionsPage() {
     return (
     <>
-      <div className="min-h-screen m-4">
         <TermsAndConditions />
-      </div>
-      <Footer /> 
+        <Footer /> 
     </>
 )}

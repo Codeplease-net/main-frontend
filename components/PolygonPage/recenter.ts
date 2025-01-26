@@ -1,14 +1,6 @@
 import { db } from "@/api/Readfirebase";
-import {
-  collection,
-  doc,
-  getDoc,
-  setDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { fetchProblemById } from "../PlaygroundPage/GetProblemById";
-import { routing } from "@/i18n/routing";
-import { decryptText, encryptText } from "@/api/toStoreInFirebase";
 import { base_null, langProps, textLangProps } from "./Polygon";
 
 export const checkExist = async (str: string) => {
@@ -21,25 +13,12 @@ export const checkExist = async (str: string) => {
   }
 };
 
-const decryptField = async(value: textLangProps) => {
-  let ret: textLangProps = {...value};
-  routing.locales.forEach((locale) => ret[locale] = decryptText(value[locale]));
-  return ret;
-};
-
-const encryptField = async (value: textLangProps) => {
-  let ret: textLangProps = {...value};
-  routing.locales.forEach((locale) => (ret[locale] = encryptText(ret[locale])));
-  return ret;
-};
-
-export const searchProblem = async (problemId: string): Promise<(problemInformationProps & generalInformationProps) | false> => {
+export const searchProblem = async (
+  problemId: string
+): Promise<(problemInformationProps & generalInformationProps) | false> => {
   try {
     let result = await fetchProblemById(problemId);
     if (!result) return false;
-
-    result.description = await decryptField(result.description)
-    result.solution = await decryptField(result.solution)
 
     return {
       problemId,
@@ -79,7 +58,7 @@ export const createNewProblem = async ({
       description: base_null,
       solution: base_null,
       title: base_null,
-    })
+    });
     return true;
   } catch (error) {
     console.log(error);
@@ -114,16 +93,14 @@ export const updateDescription = async ({
 }: { lang: langProps; problemId: string } & problemInformationProps) => {
   try {
     const docRef = doc(collection(db, "problems"), problemId);
-    const encryptedDescription = await encryptField(description);
-    const encryptedSolution = await encryptField(solution);
     await updateDoc(docRef, {
       title,
-      description: encryptedDescription,
-      solution: encryptedSolution,
+      description,
+      solution,
     });
     return true;
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return false;
   }
 };

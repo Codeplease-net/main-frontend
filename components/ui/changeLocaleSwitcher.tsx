@@ -31,6 +31,7 @@ export default function LocaleSwitcherSelect({
         {pathname, params},
         {locale: nextLocale}
       );
+      window.location.reload();
     });
   }
 

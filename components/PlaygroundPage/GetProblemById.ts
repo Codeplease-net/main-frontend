@@ -4,7 +4,6 @@ export  async function fetchProblemById(id: string) {
     try {
       const docRef = doc(db, "problems", id);
       const docSnap = await getDoc(docRef);
-      console.log(docSnap.data())
       if (docSnap.exists()) 
         return docSnap.data();
       console.log("No Documents Found !")
@@ -14,3 +13,9 @@ export  async function fetchProblemById(id: string) {
       return null;
     }
   };
+
+  export async function fetchSubmissionsById(id: number) {
+    const docRef = doc(db, "submissions", id.toString());
+    const docSnap = await getDoc(docRef);
+    return docSnap.data();
+  }

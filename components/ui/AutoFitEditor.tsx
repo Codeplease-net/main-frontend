@@ -9,34 +9,15 @@ export interface IMonacoWrapperProps {
   language: string;
 }
 
-loader.init().then((monaco) => {
-  monaco.editor.defineTheme('vs-dark-v2', {
-      base: 'vs-dark',
-      inherit: true,
-      rules: [],
-      colors: {
-        'editor.background': '#1e293b80',
-      },
-  });
-  monaco.editor.defineTheme('vs-light-v2', {
-    base: 'vs',
-    inherit: true,
-    rules: [],
-    colors: {
-      'editor.background': 'muted',
-    },
-});
-});
-
 export function MonacoWrapper({content, options, className, language}: IMonacoWrapperProps): JSX.Element {
-  const [theme, setTheme] = React.useState('vs-dark');
+  const [theme, setTheme] = React.useState('custom-vs-dark');
 
   React.useEffect(() => {
     const updateTheme = () => {
       if (document.documentElement.classList.contains('light')) {
-        setTheme('vs-light-v2');
+        setTheme('vs-light');
       } else {
-        setTheme('vs-dark-v2');
+        setTheme('vs-dark');
       }
     };
 
@@ -55,9 +36,9 @@ export function MonacoWrapper({content, options, className, language}: IMonacoWr
   }, []);
 
   return (
-    <div className={`w-11/12 border border-muted-foreground ${className} overflow-hidden`}>
+    <div className={`${className} overflow-hidden rounded-md border`}>
       <Editor
-        height={8 + 21 * content.split('\n').length}
+        height={2 + 21 * content.split('\n').length}
         width={"100%"}
         defaultLanguage={language}
         defaultValue={content}

@@ -9,7 +9,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "../ui/resizable";
-import { DoneModal, WaitingModal } from "./modal";
+import { DoneModal, WaitingModal } from "../ui/modal";
 
 const reloadTime = 2000;
 
@@ -82,7 +82,7 @@ export default function PolygonProgram() {
         setProblemIdOnFetch={setProblemIdOnFetch}
         setInputTab={setInputTab}
       />
-      <div className="h-[90vh]">
+      <div className="h-[calc(100vh-5rem)]">
         <ResizablePanelGroup
           direction="horizontal"
           className="h-full w-full"

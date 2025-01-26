@@ -32,7 +32,6 @@ function extractSections(input: string): string[] {
           }
       }
   });
-  console.log(results)
   return results;
   
 }
@@ -94,7 +93,7 @@ export function RenderMathJaxText({ content }: { content: string }) {
       {splitAndPreserve(content).map((text, id) => { 
         return (
         <div className="my-2" key={id}>
-          {text.startsWith("###") ? (
+           {text.startsWith("###") ? (
             <Example
               className="mt-1 mb-3"
               splitText={extractSections(text.substring(3, text.length))}
@@ -103,7 +102,7 @@ export function RenderMathJaxText({ content }: { content: string }) {
             <h3 className="text-xl font-semibold">{text.slice(3)}</h3>
           ) : (
             parseLaTeXToReact(text)
-          )}
+           )}
         </div>
       )})}
     </MathJaxContext>

@@ -1,5 +1,14 @@
 {
-  "node": {},
+  "node": {
+    "898c9baf28018d5b7a2bde1185a453163dcdfe2f": {
+      "workers": {
+        "app/[locale]/problems/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fmrchuongdan%2FDocuments%2FGitHub%2Fmain-frontend%2Fcomponents%2FProblemPage%2FGetProblems.tsx%22%2C%5B%22default%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/[locale]/problems/page": "action-browser"
+      }
+    }
+  },
   "edge": {},
-  "encryptionKey": "mz1bgEG7HnGyaZYijxGCWf39MFfTL71F061HF3EpwWg="
+  "encryptionKey": "anhX0CtEYwVaLFqJNlmVCE3BPZ+NT8AVaSzT6rh/x70="
 }

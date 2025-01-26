@@ -46,13 +46,15 @@ export const parseInlineCommands = (text: string, sub: boolean = false): React.R
   while ((match = inlineRegex.exec(formattedText)) !== null) {
     if (match[1]) {
       // If match[1] is not undefined, it's a math expression, so we push it directly to parts
-      parts.push(formattedText.slice(lastIndex, inlineRegex.lastIndex));
+      parts.push(
+        <span key={lastIndex}>{formattedText.slice(lastIndex, inlineRegex.lastIndex)}</span>);
     } else {
       const [fullMatch, , command, content, linkText] = match;
 
       // Push text before the match
       if (lastIndex < match.index) {
-        parts.push(formattedText.slice(lastIndex, match.index));
+        parts.push(
+          <span key={`${lastIndex}-0`}>{formattedText.slice(lastIndex, match.index)}</span>);
       }
 
       // Determine action based on the command
@@ -70,7 +72,7 @@ export const parseInlineCommands = (text: string, sub: boolean = false): React.R
         element = <span style={style as React.CSSProperties}>{parsedContent}</span>;
       }
 
-      parts.push(element);
+      parts.push(<span key={`${lastIndex}-1`}>{element}</span>);
     }
 
     // Update last index to the end of the current match
@@ -120,59 +122,71 @@ export const parseLaTeXToReact = (text: string): React.ReactNode => {
 
     // Add text before the match
     if (lastIndex < match.index) {
-      parts.push(parseInlineCommands(text.slice(lastIndex, match.index)));
+      parts.push(<div key={lastIndex}>{parseInlineCommands(text.slice(lastIndex, match.index))}</div>);
     }
+
     // Handle specific environments
     if (environment === "tabular"){
-      parts.push(parseTabular(content));
-    } else if (environment === "cpp") {
+      parts.push(<div key={lastIndex}>{parseTabular(content)}</div>);
+    } 
+    else if (environment === "cpp") {
       parts.push(
+        <div key={lastIndex}>
         <MonacoWrapper 
           language="cpp"
           content={content.substring(1, content.length-1)}
         />
+        </div>
       );
-    } else if (environment === "python") {
+    } 
+    else if (environment === "python") {
       parts.push(
+        <div key={lastIndex}>
         <MonacoWrapper 
           language="python"
           content={content.substring(1, content.length-1)}
         />
+        </div>
       );
-    }  else if (environment === "java") {
+    } 
+    else if (environment === "java") {
       parts.push(
+        <div key={lastIndex}>
         <MonacoWrapper 
           language="java"
           content={content.substring(1, content.length-1)}
         />
+        </div>
       );
-    } else if (environment === "itemize") {
+    } 
+    else if (environment === "itemize") {
       parts.push(
-        <ul className="list-disc pl-10">
+        <ul className="list-disc pl-10" key={lastIndex}>
           {content.split(/\\item/).slice(1).map((line, index) => (
             <li key={index}>{parseInlineCommands(line.trim())}</li>
           ))}
         </ul>
       );
-    } else if (environment === "enumerate") {
+    } 
+    else if (environment === "enumerate") {
       parts.push(
-        <ol className="list-decimal pl-10">
+        <ol className="list-decimal pl-10" key={lastIndex}>
           {content.split(/\\item/).slice(1).map((line, index) => (
             <li key={index}>{parseInlineCommands(line.trim())}</li>
           ))}
         </ol>
       );
     } else if (environment === "center") {
-      parts.push(<div className="text-center">{parseInlineCommands(content.trim())}</div>);
+      parts.push(<div className="text-center" key={lastIndex}>{parseInlineCommands(content.trim())}</div>);
     }
 
-    // Update the last index
+    // // Update the last index
     lastIndex = blockRegex.lastIndex;
   }
 
   // Add remaining text
   if (lastIndex < text.length) {
-    parts.push(parseInlineCommands(text.slice(lastIndex)));
+    parts.push(<div key={lastIndex}>{parseInlineCommands(text.slice(lastIndex))}</div>);
   }
 
   return parts;

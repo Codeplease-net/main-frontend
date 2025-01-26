@@ -299,7 +299,7 @@ export default function InputPart({
   };
 
   return (
-    <Card className="w-full flex flex-col h-[90vh] border-none rounded-none shadow-none bg-muted">
+    <Card className="w-full flex flex-col h-[calc(100vh-5rem)] border-none rounded-none shadow-none bg-muted">
       <CardContent className="p-0 flex-grow overflow-auto">
         <Tabs
           value={inputTab}
@@ -314,7 +314,6 @@ export default function InputPart({
                   <TabsTrigger value="en">English</TabsTrigger>
                   <TabsTrigger value="de">German</TabsTrigger>
                   <TabsTrigger value="zh-CN">Chinese</TabsTrigger>
-                  {/* <TabsTrigger value="ko">Korean</TabsTrigger> */}
                   <TabsTrigger value="vi">Vietnamese</TabsTrigger>
                 </>
               ) : null}

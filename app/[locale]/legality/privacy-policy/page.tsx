@@ -4,9 +4,7 @@ import PrivacyPolicy from "@/components/PrivacyPolicyPage/PrivacyPolicy";
 export default function PrivacyPolicyPage() {
     return (
     <>
-      <div className="min-h-screen m-4">
-        <PrivacyPolicy />
-      </div>
+      <PrivacyPolicy />
       <Footer /> 
     </>
 )}

@@ -1,81 +1,53 @@
 import { useTranslations } from 'next-intl';
+import { Card } from '@/components/ui/card';
 
 export default function TermsAndConditions() {
   const t = useTranslations('Legality.TermsAndConditions');
+  
+  const sections = [
+    { label: 'Acceptance of Terms', content: t('StaticText.1') },
+    { label: 'Description of Services', content: t('StaticText.2') },
+    { label: 'User Accounts', content: t('StaticText.3') },
+    { label: 'User Conduct', content: [t('StaticText.4'), t('StaticText.5'), t('StaticText.6'), t('StaticText.7'), t('StaticText.8')] },
+    { label: 'Intellectual Property', content: t('StaticText.9') },
+    { label: 'Limitation of Liability', content: t('StaticText.10') },
+    { label: 'Indemnification', content: t('StaticText.11') },
+    { label: 'Governing Law', content: t('StaticText.12') },
+    { label: 'Changes to Terms and Conditions', content: t('StaticText.13') },
+  ];
+
   return (
-    <div className='mb-8'>
-      <div className="max-w-7xl mx-auto relative z-10 w-full">
-        <div className="text-4xl text-center font-bold">{t('title')}</div>
-      </div>
-      <div className="px-20 mt-5 space-y-5">
-        <div className="text-xl font-semibold flex">
-          <div className="mr-2">A.</div>
-          <div>{t('Acceptance of Terms')}:</div>
+    <div className="min-h-screen bg-background py-8 px-4 sm:px-6 lg:px-8">
+      <Card className="max-w-4xl mx-auto p-6 sm:p-8 space-y-8">
+        <h1 className="text-3xl sm:text-4xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-600">
+          {t('title')}
+        </h1>
+
+        <div className="space-y-8">
+          {sections.map((section, index) => (
+            <div key={index} className="space-y-4">
+              <div className="flex items-start">
+                <span className="text-xl font-semibold text-primary mr-3">
+                  {String.fromCharCode(65 + index)}.
+                </span>
+                <h2 className="text-xl font-semibold">{t(section.label)}:</h2>
+              </div>
+
+              <div className="ml-8 space-y-3">
+                {Array.isArray(section.content) ? (
+                  section.content.map((item, idx) => (
+                    <p key={idx} className="text-muted-foreground">
+                      {item}
+                    </p>
+                  ))
+                ) : (
+                  <p className="text-muted-foreground">{section.content}</p>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
-        <ul className="list-disc space-y-2 mt-2">
-          <div className="ml-7">{t('StaticText.1')}</div>
-        </ul>
-        <div className="text-xl font-semibold flex">
-          <div className="mr-2">B.</div>
-          <div>{t('Description of Services')}:</div>
-        </div>
-        <ul className="list-disc space-y-2 mt-2">
-          <div className="ml-7">{t('StaticText.2')}</div>
-        </ul>
-        <div className="text-xl font-semibold flex">
-          <div className="mr-2">C.</div>
-          <div>{t('User Accounts')}:</div>
-        </div>
-        <ul className="list-disc space-y-2 mt-2">
-          <div className="ml-7">{t('StaticText.3')}</div>
-        </ul>
-        <div className="text-xl font-semibold flex">
-          <div className="mr-2">D.</div>
-          <div>{t('User Conduct')}:</div>
-        </div>
-        <ul className="list-disc space-y-2 mt-2">
-          <div className="ml-7">{t('StaticText.4')}</div>
-          <li className="ml-12">{t('StaticText.5')}</li>
-          <li className="ml-12">{t('StaticText.6')}</li>
-          <li className="ml-12">{t('StaticText.7')}</li>
-          <li className="ml-12">{t('StaticText.8')}</li>
-        </ul>
-        <div className="text-xl font-semibold flex">
-          <div className="mr-2">E.</div>
-          <div>{t('Intellectual Property')}:</div>
-        </div>
-        <ul className="list-disc space-y-2 mt-2">
-          <div className="ml-7">{t('StaticText.9')}</div>
-        </ul>
-        <div className="text-xl font-semibold flex">
-          <div className="mr-2">F.</div>
-          <div>{t('Limitation of Liability')}:</div>
-        </div>
-        <ul className="list-disc space-y-2 mt-2">
-          <div className="ml-7">{t('StaticText.10')}</div>
-        </ul>
-        <div className="text-xl font-semibold flex">
-          <div className="mr-2">G.</div>
-          <div>{t('Indemnification')}:</div>
-        </div>
-        <ul className="list-disc space-y-2 mt-2">
-          <div className="ml-7">{t('StaticText.11')}</div>
-        </ul>
-        <div className="text-xl font-semibold flex">
-          <div className="mr-2">H.</div>
-          <div>{t('Governing Law')}:</div>
-        </div>
-        <ul className="list-disc space-y-2 mt-2">
-          <div className="ml-7">{t('StaticText.12')}</div>
-        </ul>
-        <div className="text-xl font-semibold flex">
-          <div className="mr-2">I.</div>
-          <div>{t('Changes to Terms and Conditions')}:</div>
-        </div>
-        <ul className="list-disc space-y-2 mt-2">
-          <div className="ml-7">{t('StaticText.13')}</div>
-        </ul>
-      </div>
+      </Card>
     </div>
   );
 }

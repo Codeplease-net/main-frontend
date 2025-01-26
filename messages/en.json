@@ -11,6 +11,8 @@
     "Sign Out": "Sign Out"
   },
   "Footer": {
+    "Resources & Legal": "Resources & Legal",
+    "Topics": "Topics",
     "Platform": "Platform",
     "About": "About",
     "Contests": "Contests",
@@ -102,7 +104,8 @@
     "Intermediate": "Intermediate", 
     "Moderate": "Moderate", 
     "Very Hard": "Very Hard",
-    "Expert": "Expert"
+    "Expert": "Expert",
+    "StartSolvingProblems": "Start Solving Problems to improve your skills!"
   },
   "Contests": {
     "View Details": "View Details",
@@ -119,9 +122,20 @@
     "Username": "Username",
     "Rating": "Rating",
     "Contests Joined": "Contests Joined",
-    "Problems Solved": "Problems Solved"
+    "Problems Solved": "Problems Solved",
+    "Previous": "Previous",
+    "Next": "Next",
+    "Leaderboard": "Leaderboard"
   },
   "Topics": {
+    "ExploreTopics": "Explore various programming topics and enhance your problem-solving skills",
+    "StartPracticing": "Start Practicing",
+    "Name": "Name",
+    "Description": "Description",
+    "Difficulty": "Difficulty",
+    "Advanced": "Advanced",
+    "Beginner": "Beginner",
+    "Intermediate": "Intermediate",
     "Topics": "Topics",
     "Brute Force": "Brute Force",
     "Binary Search": "Binary Search",
@@ -146,9 +160,37 @@
     "Graph Matchings": "Graph Matchings",
     "Interactive": "Interactive",
     "Matrix": "Matrix",
-    "Ternary Search": "Ternary Search"
+    "Ternary Search": "Ternary Search",
+    "SearchTopics": "Search topics...",
+    "All Difficulties": "All Difficulties",
+    "BruteForceDesc": "A straightforward approach that systematically checks all possible solutions until finding the correct one",
+    "BinarySearchDesc": "A divide-and-conquer algorithm that finds a target value by repeatedly dividing the search space in half",
+    "GreedyDesc": "An algorithmic paradigm that makes locally optimal choices at each step, hoping to find a global optimum",
+    "StringDesc": "Problems involving manipulation and analysis of text strings",
+    "SearchDesc": "Various searching algorithms and techniques to find elements in data structures",
+    "SortDesc": "Different methods for arranging data in a specific order",
+    "NumberTheoryDesc": "Mathematical concepts dealing with properties and relationships of numbers",
+    "DSDesc": "Implementation and usage of various data structures to organize and store data efficiently",
+    "DPDesc": "Method for solving complex problems by breaking them down into simpler subproblems",
+    "GraphDesc": "Problems involving vertices and edges, including traversal and shortest path algorithms",
+    "TreeDesc": "Hierarchical data structures and algorithms for tree-based problem solving",
+    "TwoPointersDesc": "Technique using two pointers to traverse an array or sequence",
+    "BitDesc": "Operations and algorithms involving binary representation of numbers",
+    "GeometryDesc": "Problems involving points, lines, shapes, and spatial relationships",
+    "GamesDesc": "Game theory and strategic problem-solving scenarios",
+    "CombinatoricsDesc": "Mathematical methods for counting, arranging, and combining objects",
+    "MeetInTheMiddleDesc": "Technique that splits the problem in half to reduce exponential complexity",
+    "ProbabilitiesDesc": "Problems involving chance and likelihood calculations",
+    "CRTDesc": "Number theory concept for solving systems of linear congruences",
+    "FFTDesc": "Algorithm for efficiently computing polynomial multiplication and convolutions",
+    "GraphMatchingsDesc": "Problems involving pairing vertices in graphs under certain constraints",
+    "InteractiveDesc": "Problems requiring interaction with a judge or system during solving",
+    "MatrixDesc": "Operations and algorithms involving 2D arrays and linear algebra",
+    "TernarySearchDesc": "Optimization technique that reduces search space into three parts"
   },
   "Playground": {
+    "Submissions": "Submissions",
+    "Solution": "Solution",
     "Description": "Description",
     "Solutions": "Solutions",
     "My Submissions": "My Submissions",
@@ -175,6 +217,9 @@
     "Accepted": "Accepted",
     "Wrong Answer": "Wrong Answer",
     "Compile Error": "Compile Error",
+    "Time Limit Exceeded": "Time Limit Exceeded",
+    "Runtime Error": "Runtime Error",
+    "Memory Limit Exceeded": "Memory Limit Exceeded",
     "Language": "Language",
     "Sort by": "Sort by",
     "None": "None",
@@ -250,7 +295,7 @@
   },
   "DeveloperTeam":{
     "title": "CodePlease's Developer Team",
-    "Role": "Role:"
+    "Role": "Role"
   },
   "Profile":{
     "Rank": "Rank {number}",

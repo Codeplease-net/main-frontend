@@ -1,7 +1,6 @@
 import React from "react";
 import { useTranslations } from "next-intl";
-import { decryptText } from "@/api/toStoreInFirebase";
-import { RenderMathJaxText } from "../ui/RenderMathJaxText";
+import { RenderMathJaxText } from "../../ui/RenderMathJaxText";
 import { MathJaxContext } from "better-react-mathjax";
 
 interface SolutionDescriptionProps {
@@ -13,9 +12,7 @@ const formatDescription = (description: string, t: any) => {
     return <p>{t("NoSol")}</p>;
   }
 
-  return (
-    <RenderMathJaxText content={decryptText(description)}/>
-  );
+  return <RenderMathJaxText content={description} />;
 };
 
 export default function SolutionDescription({
@@ -23,12 +20,9 @@ export default function SolutionDescription({
 }: SolutionDescriptionProps) {
   const t = useTranslations("Playground");
   return (
-    <div className="w-full">
+    <div className="w-full pb-6">
       <MathJaxContext>
-      <div className="space-y-4">
-        
-        {formatDescription(description, t)}
-      </div>
+        <div className="space-y-4">{formatDescription(description, t)}</div>
       </MathJaxContext>
     </div>
   );
