@@ -21,7 +21,6 @@ import { useTranslations } from "next-intl";
 import { TestCase } from "./Tab/Props";
 import { Editor } from "@monaco-editor/react";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const abbreviationToFull = {
@@ -446,15 +445,13 @@ function SubmissionDetail({ submission }: SubmissionDetailProps) {
   );
 }
 
-interface SubmissionProps {
-  displaySubmission: number;
-  setDisplaySubmission: (id: number | undefined) => void;
-}
-
 export default function Submission({
   displaySubmission,
   setDisplaySubmission,
-}: SubmissionProps) {
+}:  {
+  displaySubmission: number;
+  setDisplaySubmission: (id: number | undefined) => void;
+}) {
   const [submission, setSubmission] = useState<DocumentData | null>(null);
   const [loading, setLoading] = useState(true);
 

@@ -1,76 +1,92 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Loader2 } from 'lucide-react';
 
 interface ModalProps {
   isOpen: boolean;
-}
-
-interface WaitingModalProps {
-  isOpen: boolean;
   message?: string;
-  detailMessage?: string
+  detailMessage?: string;
 }
 
-export const WaitingModal: React.FC<WaitingModalProps> = ({ isOpen }) => {
-  if (!isOpen) return null;
-
-  return (
-    <div
-      className="fixed inset-0 flex justify-center items-center bg-gray-500 bg-opacity-50 backdrop-blur-sm z-50 transition-opacity duration-500 ease-out"
-      role="dialog"
-      aria-live="assertive"
-      aria-labelledby="waiting-modal-title"
-    >
-      <div
-        className="bg-white bg-opacity-70 p-8 rounded-2xl shadow-xl max-w-[95%] sm:max-w-md md:max-w-lg flex flex-col items-center space-y-4 transform transition-all duration-500 ease-in-out"
-        style={{
-          opacity: isOpen ? 1 : 0,
-          transform: isOpen ? 'scale(1)' : 'scale(0.98)',
-        }}
+const ModalOverlay = ({ children, isOpen }: { children: React.ReactNode; isOpen: boolean }) => (
+  <AnimatePresence>
+    {isOpen && (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 flex justify-center items-center z-50"
       >
-        <div className="animate-spin rounded-full border-t-4 border-indigo-600 w-16 h-16"/>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="absolute inset-0 bg-background/80 backdrop-blur-sm"
+        />
+        <motion.div
+          initial={{ scale: 0.95, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.95, opacity: 0 }}
+          className="relative z-50"
+        >
+          {children}
+        </motion.div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+);
+
+export const WaitingModal = ({ isOpen, message = "Processing...", detailMessage }: ModalProps) => (
+  <ModalOverlay isOpen={isOpen}>
+    <div className="bg-background/95 border shadow-lg rounded-lg p-6 w-[90vw] max-w-md">
+      <div className="flex flex-col items-center gap-4">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <div className="space-y-2 text-center">
+          <h2 className="text-lg font-semibold">{message}</h2>
+          {detailMessage && (
+            <p className="text-sm text-muted-foreground">{detailMessage}</p>
+          )}
+        </div>
       </div>
     </div>
-  );
-};
+  </ModalOverlay>
+);
 
-export const DoneModal: React.FC<ModalProps> = ({ isOpen }) => {
-  if (!isOpen) return null;
-
-  return (
-    <div
-      className="fixed inset-0 flex justify-center items-center bg-gray-500 bg-opacity-50 backdrop-blur-sm z-50 transition-opacity duration-500 ease-out"
-      role="dialog"
-      aria-live="assertive"
-      aria-labelledby="waiting-modal-title"
-    >
-        <div
-        className="bg-white bg-opacity-70 p-8 rounded-2xl shadow-xl max-w-[95%] sm:max-w-md md:max-w-lg flex flex-col items-center space-y-4 transform transition-all duration-500 ease-in-out"
-        style={{
-          opacity: isOpen ? 1 : 0,
-          transform: isOpen ? 'scale(1)' : 'scale(0.98)',
-        }}
-      >
-        <div className="text-center">
+export const DoneModal = ({ isOpen, message = "Success!", detailMessage }: ModalProps) => (
+  <ModalOverlay isOpen={isOpen}>
+    <div className="bg-background/95 border shadow-lg rounded-lg p-6 w-[90vw] max-w-md">
+      <div className="flex flex-col items-center gap-4">
+        <div className="relative h-12 w-12">
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", stiffness: 200, damping: 15 }}
+            className="bg-primary/10 absolute inset-0 rounded-full"
+          />
           <motion.svg
-            xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
-            fill="none"
+            className="text-primary h-12 w-12 relative"
             stroke="currentColor"
-            strokeWidth="2"
+            strokeWidth={2}
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="text-green-500 w-16 h-16 mx-auto"
+            fill="none"
           >
             <motion.path
-              d="M5 12l5 5L20 7"
+              d="M20 6L9 17l-5-5"
               initial={{ pathLength: 0 }}
               animate={{ pathLength: 1 }}
-              transition={{ duration: 1, ease: 'easeInOut' }}
+              transition={{ duration: 0.5, delay: 0.2 }}
             />
           </motion.svg>
         </div>
+        <div className="space-y-2 text-center">
+          <h2 className="text-lg font-semibold">{message}</h2>
+          {detailMessage && (
+            <p className="text-sm text-muted-foreground">{detailMessage}</p>
+          )}
         </div>
+      </div>
     </div>
-  );
-};
+  </ModalOverlay>
+);

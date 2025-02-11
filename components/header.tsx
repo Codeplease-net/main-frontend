@@ -18,7 +18,7 @@ import logoheadwhite from "../public/logoheadwhite.png";
 import logoheadblack from "../public/logoheadblack.png";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
-import LocaleSwitcher from "./ui/changeLocale";
+import LocaleSwitcher from "./ui/change-locale";
 import { usePathname } from "next/navigation";
 
 export default function Header() {

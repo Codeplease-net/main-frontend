@@ -13,7 +13,7 @@ import { PiCheckCircleBold as CheckmarkIcon } from "react-icons/pi";
 import { useTranslations } from "next-intl";
 
 
-export default function CopyButton({ content }: { content: string }) {
+export default function CopyButton({ content, classname = "" }: { content: string, classname?: string }) {
   const t = useTranslations('Playground')
   const [copied, setCopied] = useState(false);
 
@@ -33,7 +33,7 @@ export default function CopyButton({ content }: { content: string }) {
             aria-label="Copy"
             variant="ghost"
             size="icon"
-            className="size-7"
+            className={`size-7 ${classname}`}
             onClick={copyToClipboard}
           >
             {copied ? (

@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslations } from "next-intl";
-import { RenderMathJaxText } from "../../ui/RenderMathJaxText";
+import { RenderMathJaxText } from "../../ui/description/mathjax";
 import { CardTitle } from "../../ui/card";
 import DifficultyBox from "../../ui/difficulty";
 import CategoryBadge from "../../ui/category";

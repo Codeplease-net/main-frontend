@@ -11,60 +11,25 @@
       "static/css/app/[locale]/layout.css",
       "static/chunks/app/[locale]/layout.js"
     ],
-    "/[locale]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/page.js"
-    ],
     "/[locale]/problems/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/[locale]/problems/page.js"
     ],
-    "/[locale]/leaderboard/page": [
+    "/[locale]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/leaderboard/page.js"
-    ],
-    "/[locale]/topics/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/topics/page.js"
-    ],
-    "/[locale]/profile/[id]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/profile/[id]/page.js"
-    ],
-    "/[locale]/developer-team/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/developer-team/page.js"
-    ],
-    "/[locale]/contests/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/contests/page.js"
-    ],
-    "/[locale]/legality/privacy-policy/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/legality/privacy-policy/page.js"
-    ],
-    "/[locale]/legality/terms-and-conditions/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/legality/terms-and-conditions/page.js"
+      "static/chunks/app/[locale]/page.js"
     ],
     "/[locale]/polygon/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/[locale]/polygon/page.js"
     ],
-    "/_not-found/page": [
+    "/[locale]/polygon/[id]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/_not-found/page.js"
+      "static/chunks/app/[locale]/polygon/[id]/page.js"
     ]
   }
 }

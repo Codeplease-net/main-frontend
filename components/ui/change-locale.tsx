@@ -1,5 +1,8 @@
 'use client';
 
+import { useLocale } from "next-intl";
+import { routing } from "@/i18n/routing";
+import listCountry from '../../messages/listlang.json'
 import clsx from 'clsx';
 import {useParams} from 'next/navigation';
 import {ChangeEvent, ReactNode, useTransition} from 'react';
@@ -11,7 +14,7 @@ type Props = {
   label: string;
 };
 
-export default function LocaleSwitcherSelect({
+function LocaleSwitcherSelect({
   children,
   defaultValue,
   label
@@ -53,5 +56,18 @@ export default function LocaleSwitcherSelect({
       </select>
       <span className="pointer-events-none absolute right-2 top-[8px]">⌄</span>
     </label>
+  );
+}
+
+export default function LocaleSwitcher() {
+  const locale = useLocale();
+  return (
+    <LocaleSwitcherSelect defaultValue={locale} label={"label"}>
+      {routing.locales.map((cur) => (
+        <option key={cur} value={cur}>
+          {listCountry[cur]}
+        </option>
+      ))}
+    </LocaleSwitcherSelect>
   );
 }
