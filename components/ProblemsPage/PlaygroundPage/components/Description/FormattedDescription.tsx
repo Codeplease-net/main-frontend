@@ -1,8 +1,14 @@
 import { useTranslations } from "next-intl";
 import { RenderMathJaxText } from "@/components/ui/description/mathjax";
 import { CardTitle } from "@/components/ui/card";
-import { FormattedDescriptionProps } from "../../utils/types";
 import { CategoryBadge } from "@/components/ProblemsPage/ProblemsetPage/components/CategoryBadges";
+
+interface FormattedDescriptionProps {
+  content: string;
+  title: string;
+  difficulty: number;
+  categories: string[];
+}
 
 const formatDescription = (description: string, t: (key: string) => string) => {
   if (!description) {

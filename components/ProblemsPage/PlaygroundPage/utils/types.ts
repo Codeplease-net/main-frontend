@@ -29,17 +29,6 @@ export interface TestCase {
     solution: string;
   }
   
-  export interface FormattedDescriptionProps {
-    content: string;
-    title: string;
-    difficulty: number;
-    categories: string[];
-  }
-  
-  export interface FormattedSolutionProps {
-    content: string;
-  }
-  
   export interface SubmissionsTabProps {
     displaySubmission: string | undefined;
     onSubmissionClick: (submissionId: string) => void;

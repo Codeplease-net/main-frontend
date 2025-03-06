@@ -1,4 +1,4 @@
-import PlayGroundComponent from '@/components/ProblemsPage/PlayGroundPage';
+import PlaygroundComponent from '@/components/ProblemsPage/PlaygroundPage';
 
 interface PlaygroundPageProps {
   params: { id: string, tab: string };
@@ -10,6 +10,6 @@ export default async function PlayGroundPage({
   searchParams
 }: PlaygroundPageProps){
   return (
-    <PlayGroundComponent id={params.id} tab={params.tab} searchParams={searchParams} />
+    <PlaygroundComponent id={params.id} tab={params.tab} searchParams={searchParams} />
   )
 }

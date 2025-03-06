@@ -26,7 +26,7 @@ import DotsLoader from "./components/DotsLoader";
 import { Problem } from "./utils/types";
 import { fetchProblemById } from "./api/problem";
 
-export default function PlaygroundPage({ id, tab, searchParams }: { tab: string, id: string, searchParams: { [key: string]: string | undefined }}) {
+export default function PlaygroundComponent({ id, tab, searchParams }: { tab: string, id: string, searchParams: { [key: string]: string | undefined }}) {
   
   // Tab state - initialize from URL path tab parameter
   const [selectedTab, setSelectedTabState] = useState<string>(tab || "description");
@@ -184,7 +184,9 @@ export default function PlaygroundPage({ id, tab, searchParams }: { tab: string,
       animate={{ opacity: 1 }}
       className="h-[calc(100vh)] flex-1"
     >
-      <WaitingModal isOpen={waiting} />
+      <WaitingModal open={false} isOpen={waiting} onOpenChange={setWaiting}>
+        <div>Loading...</div>
+      </WaitingModal>
       
       <ResizablePanelGroup
         direction={isMobile ? "vertical" : "horizontal"}
@@ -241,9 +243,8 @@ export default function PlaygroundPage({ id, tab, searchParams }: { tab: string,
       <AnimatePresence>
         {isLoginVisible && (
           <Login
-            onClose={toggleLoginVisibility}
-            redirectDes={`/problems/playground/${id}`}
-          />
+              onClose={toggleLoginVisibility}
+              redirectDes={`/problems/playground/${id}`} isOpen={false}          />
         )}
       </AnimatePresence>
     </motion.div>

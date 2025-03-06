@@ -1,6 +1,9 @@
 import { useTranslations } from "next-intl";
 import { RenderMathJaxText } from "@/components/ui/description/mathjax";
-import { FormattedSolutionProps } from "../../utils/types";
+
+interface FormattedSolutionProps {
+  content: string;
+}
 
 const formatDescription = (description: string, t: (key: string) => string) => {
   if (!description) {

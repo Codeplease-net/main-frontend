@@ -27,12 +27,11 @@ import {
   getLocalTimeAndDate, 
   calculateTime, 
   calculateMemory 
-} from "../../utils/formatters";
+} from "@/components/ProblemsPage/PlaygroundPage/utils/formatters";
 import { 
   SubmissionDetailProps, 
-  TestCase 
-} from "../../utils/types";
-import { langToMonacoLang, FormalLang } from "../../utils/constants";
+} from "@/components/ProblemsPage/PlaygroundPage/utils/types";
+import { langToMonacoLang, FormalLang } from "@/components/ProblemsPage/PlaygroundPage/utils/constants";
 
 interface SubmissionProps {
   submissionId: string;

@@ -18,10 +18,9 @@ export function useProblem(id: string) {
 
         setProblem({
           id,
-          category: result.category,
+          categories: result.categories,
           difficulty: result.difficulty,
           acceptance: result.acceptance,
-          status: result.status,
           title: result.title[locale],
           description: result.description[locale],
           solution: result.solution[locale],

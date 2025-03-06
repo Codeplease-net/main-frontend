@@ -77,6 +77,7 @@ interface TableCellProps {
   colSpan?: number;
   align?: "left" | "center" | "right";
   hasBorder?: boolean;
+  style?: React.CSSProperties;
 }
 
 export const formatDashes = (text: string): string => {
@@ -255,7 +256,7 @@ const TableCell: React.FC<TableCellProps> = ({
     style={{
       ...(styleMap.tableCell as React.CSSProperties),
       textAlign: align,
-      ...(hasBorder ? styleMap.tableBorder : null),
+      ...(hasBorder ? (styleMap.tableBorder as React.CSSProperties) : {}),
     }}
   >
     {content}
@@ -384,7 +385,7 @@ export const parseLaTeXToReact = (text: string): React.ReactNode => {
                             : "none",
                       }}
                     >
-                      {row.cells.map((cell, cellIndex) => {
+                      {row.cells?.map((cell, cellIndex) => {
                         const hasLeftBorder = alignments[cellIndex * 2] === "|";
                         const hasRightBorder =
                           alignments[cellIndex * 2 + 1] === "|";
@@ -396,7 +397,7 @@ export const parseLaTeXToReact = (text: string): React.ReactNode => {
                             rowSpan={cell.rowSpan}
                             colSpan={cell.colSpan}
                             align={
-                              cell.align ||
+                              (cell.align as "left" | "center" | "right") ||
                               (alignments[cellIndex] === "c"
                                 ? "center"
                                 : alignments[cellIndex] === "l"

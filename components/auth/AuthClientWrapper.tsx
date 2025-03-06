@@ -22,8 +22,8 @@ export default function AuthClientWrapper({ children }: { children: React.ReactN
         
     // Import auth and db dynamically
     Promise.all([
-      import('@/api/ReadFirebase').then(module => module.auth),
-      import('@/api/ReadFirebase').then(module => module.db)
+      import('@/api/Readfirebase').then(module => module.auth),
+      import('@/api/Readfirebase').then(module => module.db)
     ]).then(([auth, db]) => {
       // Set up auth state listener
       const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {

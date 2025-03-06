@@ -1,14 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -78,14 +70,14 @@ export function TestcasesTab({ problemId }: TestcasesTabProps) {
   const [newTestCase, setNewTestCase] = useState({
     input: "",
     output: "",
-    inputFile: null,
-    outputFile: null,
+    inputFile: null as File | null,
+    outputFile: null as File | null,
     score: 0,
   });
 
   // Common score presets for quick selection
   const scorePresets = [0, 5, 10, 20, 25, 33, 50, 100];
-  
+
   const Process = (data: any) => {
     let t = data;
     for (let i: number = 0; i < t.test_cases.length; i++) {
@@ -123,7 +115,7 @@ export function TestcasesTab({ problemId }: TestcasesTabProps) {
     try {
       const form = new FormData();
       form.append("name", problemId);
-      form.append("test_case_index", index);
+      form.append("test_case_index", index.toString());
 
       await axios.post(
         `${process.env.NEXT_PUBLIC_JUDGE0_API_KEY}/testcases/delete`,

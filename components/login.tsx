@@ -49,7 +49,7 @@ export default function Login({ isOpen, onClose, redirectDes }: { isOpen: boolea
   };
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={onClose} className="max-w-sm">
+    <Modal isOpen={isOpen} onOpenChange={onClose} className="max-w-sm" open={false}>
       <ModalContent>
         <ModalHeader>
           <ModalTitle>Sign In</ModalTitle>

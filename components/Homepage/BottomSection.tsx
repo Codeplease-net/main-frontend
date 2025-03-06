@@ -55,7 +55,7 @@ export default function BottomSection() {
 
       <AnimatePresence>
         {isLoginVisible && (
-          <Login onClose={toggleLoginVisibility} redirectDes='/' />
+          <Login onClose={toggleLoginVisibility} redirectDes='/' isOpen={false} />
         )}
       </AnimatePresence>
     </div>

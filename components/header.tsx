@@ -22,7 +22,7 @@ import { useTranslations } from "next-intl";
 import LocaleSwitcher from "./ui/change-locale";
 import { usePathname } from "next/navigation";
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/api/ReadFirebase";
+import { db } from "@/api/Readfirebase";
 
 export default function Header() {
   const t = useTranslations("Header");

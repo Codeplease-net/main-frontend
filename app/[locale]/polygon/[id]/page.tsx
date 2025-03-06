@@ -1,5 +1,4 @@
 import ProblemDetail from "@/components/PolygonPage/Problem";
-import { LanguageCode } from "@/components/PolygonPage/types/language";
 
 interface PageProps {
     params: { id: string };
@@ -10,7 +9,7 @@ export default async function PolygonPage({
   params,
   searchParams
 }: PageProps){
-    const lang = (searchParams.lang || 'en') as LanguageCode;
+    const lang = (searchParams.lang || 'en');
 
   return (
     <>

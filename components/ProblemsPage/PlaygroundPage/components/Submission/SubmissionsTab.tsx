@@ -37,18 +37,17 @@ import {
 } from "lucide-react";
 
 // Utils
-import { SubmissionDetailProps } from "../../utils/types";
+import { SubmissionDetailProps } from "@/components/ProblemsPage/PlaygroundPage/utils/types";
 import {
   getTimeInHoursAndMinutesWithGMT,
-  getDate,
   countAccepted,
   calculateTime,
   calculateMemory,
-} from "../../utils/formatters";
+} from "@/components/ProblemsPage/PlaygroundPage/utils/formatters";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/api/Readfirebase";
 import { User as UserFirebase } from "firebase/auth";
-import { abbreviationToFull } from "../../utils/constants";
+import { abbreviationToFull } from "@/components/ProblemsPage/PlaygroundPage/utils/constants";
 
 interface SubmissionsTabProps {
   displaySubmission: string | undefined;
@@ -296,7 +295,7 @@ export default function SubmissionsTab({
                       </div>
                     ) : (
                       <span className="text-xs text-muted-foreground">
-                        {t(`status.${abbreviationToFull[submission.result]}`)}
+                        {t(`status.${abbreviationToFull[submission.result as keyof typeof abbreviationToFull]}`)}
                       </span>
                     )}
                   </TableCell>

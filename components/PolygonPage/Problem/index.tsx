@@ -17,7 +17,7 @@ export default function ProblemDetail({id, lang}: {id: string, lang: string}) {
 
   return (
     <div className="flex-1 relative">
-      <WaitingModal isOpen={state.isLoading} />
+      <WaitingModal open={state.isLoading} onOpenChange={() => { } } children={<div>Loading...</div>} isOpen={false} />
       
       <div className="h-[calc(100vh)]">
         <ResizablePanelGroup

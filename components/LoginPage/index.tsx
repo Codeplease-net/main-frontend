@@ -11,8 +11,7 @@ import {
   createUserWithEmailAndPassword, 
   sendPasswordResetEmail 
 } from "firebase/auth";
-import { auth } from "@/api/ReadFirebase";
-import { db } from "@/api/ReadFirebase";
+import { auth, db } from "@/api/Readfirebase";
 import { doc, setDoc, query, collection, where, getDocs } from "firebase/firestore";
 
 // Icons

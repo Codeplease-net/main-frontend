@@ -1,8 +1,7 @@
 import React from "react";
 import { useTranslations } from "next-intl";
-import { motion } from "framer-motion";
-import { TestCase } from "../../utils/types";
-import { countAccepted } from "../../utils/formatters";
+import { TestCase } from "@/components/ProblemsPage/PlaygroundPage/utils/types";
+import { countAccepted } from "@/components/ProblemsPage/PlaygroundPage/utils/formatters";
 
 // UI Components
 import {
@@ -31,7 +30,7 @@ import {
   AlertTriangle,
   HelpCircle,
 } from "lucide-react";
-import { abbreviationToFull } from "../../utils/constants";
+import { abbreviationToFull } from "@/components/ProblemsPage/PlaygroundPage/utils/constants";
 
 interface TestResultsProps {
   testCases: TestCase[];

@@ -14,8 +14,10 @@ export function useSubmission(submissionId?: string) {
 
     async function loadSubmission() {
       try {
-        const data = await fetchSubmission(submissionId);
-        setSubmission(data);
+        if (typeof submissionId === 'string') {
+          const data = await fetchSubmission(submissionId);
+          setSubmission(data);
+        }
       } catch (error) {
         console.error("Error fetching submission:", error);
       } finally {
