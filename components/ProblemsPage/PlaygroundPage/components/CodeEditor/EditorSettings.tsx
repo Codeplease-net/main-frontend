@@ -47,7 +47,7 @@ export function EditorSettings({
   bracketPairs,
   setBracketPairs,
 }: EditorSettingsProps) {
-  const t = useTranslations("playground.editor");
+  const t = useTranslations("Playground.editor");
   
   return (
     <SheetContent>

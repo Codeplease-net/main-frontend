@@ -26,7 +26,7 @@ interface CodeEditorProps {
 }
 
 export function CodeEditor({ problemId, user, setDisplaySubmission, onTabChange }: CodeEditorProps) {
-  const t = useTranslations("playground");
+  const t = useTranslations("Playground");
   
   const {
     theme,
