@@ -13,13 +13,16 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "./ui/dropdown-menu";
 import logoheadwhite from "../public/logoheadwhite.png";
 import logoheadblack from "../public/logoheadblack.png";
 import Image from "next/image";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import LocaleSwitcher from "./ui/change-locale";
 import { usePathname } from "next/navigation";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/api/ReadFirebase";
 
 export default function Header() {
   const t = useTranslations("Header");
@@ -27,21 +30,50 @@ export default function Header() {
   const [isLoginVisible, setIsLoginVisible] = useState(false);
   const [Lightmode, setLightmode] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [userHandle, setUserHandle] = useState<string>("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoadingHandle, setIsLoadingHandle] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      if (currentUser) {
+        fetchUserData(currentUser.uid);
+      } else {
+        setUserHandle("");
+        setIsAdmin(false);
+      }
     });
 
     return () => unsubscribe();
   }, []);
 
+  const fetchUserData = async (uid: string) => {
+    setIsLoadingHandle(true);
+    try {
+      const userDoc = await getDoc(doc(db, "users", uid));
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        setUserHandle(userData.handle || "");
+        setIsAdmin(userData.admin === true);
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    } finally {
+      setIsLoadingHandle(false);
+    }
+  };
+
   const handleLogout = () => {
     const auth = getAuth();
     signOut(auth)
-      .then(() => setUser(null))
+      .then(() => {
+        setUser(null);
+        setUserHandle("");
+        setIsAdmin(false);
+      })
       .catch((error) => console.error(error));
   };
 
@@ -65,7 +97,7 @@ export default function Header() {
         </Link>
 
         <div className="hidden md:flex items-center space-x-1">
-          {["home", "problems", "leaderboard", "topics"].map((route, index) => (
+          {["home", "problems", "topics"].map((route, index) => (
             <Link
               key={index}
               href={route == 'home' ? '/' : `/${route}`}
@@ -96,17 +128,33 @@ export default function Header() {
                 <DropdownMenuTrigger className="hover:opacity-80 transition-opacity">
                   <Avatar>
                     <AvatarImage src="/cat.png" />
-                    <AvatarFallback>{user.displayName?.charAt(0) || "U"}</AvatarFallback>
+                    <AvatarFallback>{isLoadingHandle ? "..." : (userHandle.charAt(0) || "U")}</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuLabel className="font-medium">{user.displayName}</DropdownMenuLabel>
-                  <DropdownMenuItem>
+                  <DropdownMenuLabel className="font-medium">
+                    {isLoadingHandle ? "Loading..." : userHandle || "User"}
+                  </DropdownMenuLabel>
+                  
+                  {/* <DropdownMenuItem>
                     <Link href={`/profile/${user.uid}`}>{t("Profile")}</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <Link href={`/profile/submissions/${user.uid}`}>{t("Submissions")}</Link>
-                  </DropdownMenuItem>
+                  </DropdownMenuItem> */}
+                  
+                  {isAdmin && (
+                    <>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>
+                        <Link href="/polygon" className="w-full">
+                          {t("Admin Console")}
+                        </Link>
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                  
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout}>{t("Sign Out")}</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -149,17 +197,22 @@ export default function Header() {
                 <DropdownMenuTrigger>
                   <Avatar>
                     <AvatarImage src="/cat.png" />
-                    <AvatarFallback>{user.displayName?.charAt(0) || "U"}</AvatarFallback>
+                    <AvatarFallback>{isLoadingHandle ? "..." : (userHandle.charAt(0) || "U")}</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  <DropdownMenuLabel>{user.displayName}</DropdownMenuLabel>
-                  <DropdownMenuItem>
-                    <Link href={`/profile/${user.uid}`}>{t("Profile")}</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Link href={`/profile/submissions/${user.uid}`}>{t("Submissions")}</Link>
-                  </DropdownMenuItem>
+                  <DropdownMenuLabel>
+                    {isLoadingHandle ? "Loading..." : userHandle || "User"}
+                  </DropdownMenuLabel>
+                  
+                  {isAdmin && (
+                    <DropdownMenuItem>
+                      <Link href="/polygon" className="w-full">
+                        {t("Admin Console")}
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
+                  
                   <DropdownMenuItem onClick={handleLogout}>{t("Sign Out")}</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -172,7 +225,7 @@ export default function Header() {
         </div>
       )}
 
-      {isLoginVisible && <Login onClose={() => setIsLoginVisible(false)} redirectDes="/problems" />}
+      <Login isOpen={isLoginVisible} onClose={() => setIsLoginVisible(false)} redirectDes="/problems" />
     </header>
   );
 }

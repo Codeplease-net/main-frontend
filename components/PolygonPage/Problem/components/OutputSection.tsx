@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RenderMathJaxText } from "@/components/ui/description/mathjax";
-import CategoryBadge from "@/components/ui/category";
 import { Problem } from "../types/problem";
 import { LanguageCode } from "../types/language";
 import { FileCode, FileText } from "lucide-react";
 import Spinner from "@/components/ui/spinner"; // Assuming you have a Spinner component
+import { CategoryBadge } from "@/components/ProblemsPage/ProblemsetPage/components/CategoryBadges";
 
 interface OutputSectionProps {
   problem: Problem;
@@ -80,15 +80,17 @@ export function OutputSection({ problem, lang }: OutputSectionProps) {
               </div>
             )}
             {!loading && (
-              <div className="flex flex-col h-[calc(100vh-9rem)] overflow-auto bg-dot-pattern p-6">
-              <h1 className="text-2xl font-bold mb-2">{content.title[lang]}</h1>
-              <div className="flex items-center gap-2 mb-4">
-                <CategoryBadge category={problem.category} />
+              <div className="flex flex-col h-[calc(100vh-4rem)] overflow-auto bg-dot-pattern p-6">
+                <h1 className="text-2xl font-bold mb-2">{content.title[lang]}</h1>
+                <div className="flex items-center gap-2 mb-4">
+                  {problem.categories.map((category) => (
+                    <CategoryBadge key={category} category={category} />
+                  ))}
+                </div>
+                <div className="prose prose-sm dark:prose-invert max-w-none">
+                  <RenderMathJaxText content={content.description[lang]} />
+                </div>
               </div>
-              <div className="prose prose-sm dark:prose-invert max-w-none">
-                <RenderMathJaxText content={content.description[lang]} />
-              </div>
-            </div>
             )}
             
           </TabsContent>
@@ -98,11 +100,11 @@ export function OutputSection({ problem, lang }: OutputSectionProps) {
             className="flex-grow overflow-auto bg-background"
           >
             {loading && (
-              <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-10">
-                <Spinner />
-              </div>
+              <div className="w-full h-[calc(100vh-4rem)] inset-0 flex items-center justify-center bg-opacity-75 z-10">
+              <Spinner />
+            </div>
             )}
-             {!loading && (<div className="flex flex-col h-[calc(100vh-9rem)] overflow-auto bg-dot-pattern p-6">
+             {!loading && (<div className="flex flex-col h-[calc(100vh-4rem)] overflow-auto bg-dot-pattern p-6">
               <RenderMathJaxText content={content.solution[lang]} />
             </div>)}
           </TabsContent>

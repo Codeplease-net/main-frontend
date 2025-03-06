@@ -2,13 +2,15 @@ import SpotlightPreview from "@/components/Homepage/Spotlight";
 import TimeScroll from "@/components/Homepage/TimeLine";
 import BottomSection from "@/components/Homepage/BottomSection";
 import Footer from '@/components/footer';
+import Header from "@/components/header";
 
 export default function Home() {
   return (
     <div>
+      <Header/>
       <SpotlightPreview />
       <TimeScroll />
-      <BottomSection />
+      {/* <BottomSection /> */}
       <Footer />
     </div>
   );

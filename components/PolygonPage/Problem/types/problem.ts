@@ -9,8 +9,9 @@ export interface MultiLangText {
 export interface Problem {
   id: string | null;
   displayTitle: string;
-  category: string;
+  categories: string[];
   difficulty: number;
+  searchableTitle?: string[];
   content: {
     title: MultiLangText;
     description: MultiLangText;
@@ -32,7 +33,7 @@ export const defaultMultiLangText: MultiLangText = {
 export const defaultProblem: Problem = {
   id: null,
   displayTitle: "",
-  category: "",
+  categories: [],
   difficulty: 0,
   content: {
     title: defaultMultiLangText,

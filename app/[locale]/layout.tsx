@@ -4,14 +4,10 @@ import Header from '@/components/header';
 import React from "react";
 
 import {NextIntlClientProvider} from 'next-intl';
-
 import {routing} from '@/i18n/routing';
 import { notFound } from "next/navigation";
 import { getMessages } from "next-intl/server";
- 
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({locale}));
-}
+import AuthClientWrapper from "@/components/auth/AuthClientWrapper";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -39,10 +35,10 @@ export default async function RootLayout({children, params: {
     notFound();
   }
   const messages = await getMessages();
+  
   return (
     <html lang={locale}>
       <head>
-        <title>CodePlease</title>
         <link
           rel="icon"
           href="/icon.png"
@@ -51,8 +47,9 @@ export default async function RootLayout({children, params: {
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <Header />
-          {children}
+          <AuthClientWrapper>
+            {children}
+          </AuthClientWrapper>
         </NextIntlClientProvider>
       </body>
     </html>

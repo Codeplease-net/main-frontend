@@ -1,6 +1,60 @@
+"use client";
+
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
+import * as Dialog from "@radix-ui/react-dialog";
+import { X } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "./button";
+
+interface ModalProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  children: React.ReactNode;
+  className?: string;
+}
+
+export function Modal({ open, onOpenChange, children, className }: ModalProps) {
+  return (
+    <Dialog.Root open={open} onOpenChange={onOpenChange}>
+      <Dialog.Portal>
+        <Dialog.Overlay className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity" />
+        <Dialog.Content
+          className={cn(
+            "fixed left-1/2 top-1/2 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-lg bg-m p-6 shadow-lg dark:bg-gray-900 bg-muted",
+            className
+          )}
+        >
+          {children}
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
+  );
+}
+
+export function ModalContent({ children, className }: { children: React.ReactNode; className?: string }) {
+  return <div className={cn("flex flex-col gap-4", className)}>{children}</div>;
+}
+
+export function ModalHeader({ children, className }: { children: React.ReactNode; className?: string }) {
+  return <div className={cn("flex items-center justify-between", className)}>{children}</div>;
+}
+
+export function ModalTitle({ children, className }: { children: React.ReactNode; className?: string }) {
+  return <h2 className={cn("text-lg font-semibold", className)}>{children}</h2>;
+}
+
+export function ModalClose({ children }: { children?: React.ReactNode }) {
+  return (
+    <Dialog.Close asChild>
+      <Button variant="default" size="icon">
+        {children || <X className="h-5 w-5" />}
+      </Button>
+    </Dialog.Close>
+  );
+}
+
 
 interface ModalProps {
   isOpen: boolean;

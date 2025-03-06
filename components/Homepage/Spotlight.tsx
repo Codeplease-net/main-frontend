@@ -33,17 +33,17 @@ export default function SpotlightPreview() {
               whileTap={{ scale: 0.95 }}
             >
               <Button asChild size="lg" className="w-full sm:w-auto text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all">
-                <Link href="/problems">Start Coding</Link>
+                <Link href="/problems">{t('Start Coding')}</Link>
               </Button>
             </motion.div>
-            <motion.div
+            {/* <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <Button asChild variant="outline" size="lg" className="w-full sm:w-auto text-lg px-8 py-6 rounded-xl border-2 hover:bg-secondary/10 transition-all">
                 <Link href="/contests">Join Contests</Link>
               </Button>
-            </motion.div>
+            </motion.div> */}
           </div>
         </motion.div>
       </div>

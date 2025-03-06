@@ -15,7 +15,7 @@ import { Search, Trophy, Medal, Star, ChevronLeft, ChevronRight } from 'lucide-r
 import { Input } from '@/components/ui/input';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import DotsLoader from "@/components/PlaygroundPage/DotsLoader";
+import DotsLoader from '../ProblemsPage/PlayGroundPage/components/DotsLoader';
 
 interface LeaderboardEntry {
   username: string

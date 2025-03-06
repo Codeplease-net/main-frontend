@@ -1,12 +1,23 @@
 "use client"
 
 import React from "react"
-import ProblemsPage from "@/components/ProblemPage/ProblemPage"
+import ProblemsPage from "@/components/ProblemsPage/ProblemsetPage"
+import Footer from "@/components/footer"
+import Header from "@/components/header"
 
 interface SearchParams {
   [key: string]: string | undefined
 }
 
 export default function ProblemSetPage({ searchParams }: { searchParams: SearchParams }) {
-  return <ProblemsPage searchParams={searchParams} />
+  return (
+  <>
+    <header>
+      <title>Problem Collection</title>
+    </header>
+    <Header/>
+    <ProblemsPage searchParams={searchParams} />
+    <Footer />
+  </>
+  )
 }

@@ -10,6 +10,17 @@ export function Example({
   output: string;
   className?: string;
 }) {
+  const removeLeadingSpaces = (text: string) => {
+    if (!text) return text;
+    return text
+      .split("\n")
+      .map(line => line.trimStart())
+      .join("\n");
+  };
+
+  const trimmedInput = removeLeadingSpaces(input);
+  const trimmedOutput = removeLeadingSpaces(output);
+
   return (
     <div className={`space-y-2 ${className}`}>
       <div className="grid grid-cols-2">
@@ -18,12 +29,12 @@ export function Example({
             <CardTitle className="text-base font-bold font-mono">
               Input
             </CardTitle>
-            <CopyButton content={input} />
+            <CopyButton content={trimmedInput} />
           </CardHeader>
           <div className="w-full bg-secondary/50 h-0.5"></div>
           <CardContent className="py-5 pl-6">
             <div className="text-sm font-mono whitespace-pre-wrap break-words">
-              {input}
+              {trimmedInput}
             </div>
           </CardContent>
         </Card>
@@ -32,12 +43,12 @@ export function Example({
             <CardTitle className="text-base font-bold font-mono">
               Output
             </CardTitle>
-            <CopyButton content={output} />
+            <CopyButton content={trimmedOutput} />
           </CardHeader>
           <div className="w-full bg-secondary/50 h-0.5"></div>
           <CardContent className="py-5 pl-6">
             <div className="text-sm font-mono whitespace-pre-wrap break-words">
-              {output}
+              {trimmedOutput}
             </div>
           </CardContent>
         </Card>

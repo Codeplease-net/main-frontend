@@ -24,6 +24,20 @@ interface UseProblemReturn {
   };
 }
 
+function generateSearchableTerms(title: string): string[] {
+  const terms = [];
+  const normalizedTitle = title.toLowerCase();
+  
+  // Generate all possible substrings
+  for (let i = 0; i < normalizedTitle.length; i++) {
+    for (let j = i + 1; j <= normalizedTitle.length; j++) {
+      terms.push(normalizedTitle.slice(i, j));
+    }
+  }
+  
+  return Array.from(new Set(terms)); // Remove duplicates
+}
+
 
 export function useProblem(): UseProblemReturn {
   const [problem, setProblem] = useState<Problem>(defaultProblem);
@@ -71,8 +85,13 @@ export function useProblem(): UseProblemReturn {
   const updateProblemData = useCallback(async (updates: Partial<Problem>) => {
     try {
       setLoading(true);
-      await updateProblem(problem.id!, updates);
-      setProblem(prev => ({ ...prev, ...updates }));
+      const updatesWithSearchTerms = { ...updates };
+      if (updates.displayTitle) {
+        updatesWithSearchTerms.searchableTitle = generateSearchableTerms(updates.displayTitle);
+      }
+
+      await updateProblem(problem.id!, updatesWithSearchTerms);
+      setProblem(prev => ({ ...prev, ...updatesWithSearchTerms }));
     } catch (error) {
       console.error('Error updating problem:', error);
     } finally {

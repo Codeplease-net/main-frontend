@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST="{}"
+self.__REACT_LOADABLE_MANIFEST="{\"components/auth/AuthClientWrapper.tsx -> @/api/ReadFirebase\":{\"id\":\"components/auth/AuthClientWrapper.tsx -> @/api/ReadFirebase\",\"files\":[\"static/chunks/_app-pages-browser_api_ReadFirebase_ts.js\"]},\"components/auth/AuthClientWrapper.tsx -> firebase/firestore\":{\"id\":\"components/auth/AuthClientWrapper.tsx -> firebase/firestore\",\"files\":[\"static/chunks/_app-pages-browser_node_modules_firebase_firestore_dist_esm_index_esm_js.js\"]}}"

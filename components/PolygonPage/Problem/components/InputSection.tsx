@@ -102,7 +102,7 @@ export function InputSection({
             value="testcases"
             className="overflow-auto bg-background"
           >
-            <TestcasesTab />
+            <TestcasesTab problemId={problem.id?problem.id:"breed-counting"}/>
           </TabsContent>
         </Tabs>
       </CardContent>

@@ -12,7 +12,7 @@ export default function Footer() {
           <div className="col-span-1 md:col-span-2">
             <h2 className="text-2xl font-bold mb-4">CodePlease</h2>
             <p className="text-muted-foreground mb-6 max-w-md">
-              Empowering developers through competitive programming and problem-solving challenges. Join our community today!
+              {t("Description")}
             </p>
             <div className="flex items-center space-x-6">
               <Link
@@ -45,7 +45,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="space-y-4">
+          {/* <div className="space-y-4">
             <h3 className="text-lg font-semibold">{t("Platform")}</h3>
             <ul className="space-y-3">
               <li>
@@ -109,16 +109,16 @@ export default function Footer() {
                 </Link>
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
 
         <div className="mt-12 pt-8 border-t border-border">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground">
-              &copy; {new Date().getFullYear()} CodePlease. All rights reserved.
+              &copy; {new Date().getFullYear()} CodePlease. {t("All Rights Reserved")}.
             </p>
             <p className="text-sm text-muted-foreground">
-              Made with ❤️ by developers for developers
+              {t("Outline")}
             </p>
           </div>
         </div>

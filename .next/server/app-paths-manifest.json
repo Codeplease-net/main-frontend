@@ -1,6 +1,8 @@
 {
-  "/[locale]/problems/[id]/page": "app/[locale]/problems/[id]/page.js",
-  "/[locale]/page": "app/[locale]/page.js",
+  "/icon.png/route": "app/icon.png/route.js",
+  "/[locale]/problems/page": "app/[locale]/problems/page.js",
+  "/[locale]/login/page": "app/[locale]/login/page.js",
   "/[locale]/polygon/page": "app/[locale]/polygon/page.js",
-  "/[locale]/polygon/[id]/page": "app/[locale]/polygon/[id]/page.js"
+  "/[locale]/polygon/[id]/page": "app/[locale]/polygon/[id]/page.js",
+  "/[locale]/problems/[id]/[tab]/page": "app/[locale]/problems/[id]/[tab]/page.js"
 }

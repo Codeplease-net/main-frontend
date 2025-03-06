@@ -1,13 +1,8 @@
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { defaultProblem, Problem } from "../types/problem";
 import { db } from "@/api/Readfirebase";
-import { collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import { Problem, defaultProblem } from "../types/problem";
 
-interface ApiResponse<T> {
-  data?: T;
-  error?: string;
-}
-
-export async function fetchProblemById(id: string): Promise<ApiResponse<Problem>> {
+export async function fetchProblemById(id: string): Promise<any> {
   try {
     const docRef = doc(db, "problems", id);
     const docSnap = await getDoc(docRef);
@@ -17,18 +12,24 @@ export async function fetchProblemById(id: string): Promise<ApiResponse<Problem>
     }
 
     const data = docSnap.data();
+    // Convert categories object to array of active categories
+    const categoriesObj = data.categories || {};
+    const activeCategories = Object.entries(categoriesObj)
+      .filter(([_, isActive]) => isActive === true)
+      .map(([category]) => category);
+
     return {
-        data: {
-            id: docSnap.id,
-            displayTitle: data.displayTitle || "",
-            category: data.category || "",
-            difficulty: data.difficulty || 0,
-            content: {
-                title: data.title || defaultProblem.content.title,
-                description: data.description || defaultProblem.content.description,
-                solution: data.solution || defaultProblem.content.solution,
-            },
-        },
+      data: {
+        id: docSnap.id,
+        displayTitle: data.displayTitle || "",
+        categories: activeCategories, // Now returns array of active categories
+        difficulty: data.difficulty || 0,
+        content: {
+          title: data.title || defaultProblem.content.title,
+          description: data.description || defaultProblem.content.description,
+          solution: data.solution || defaultProblem.content.solution,
+        }
+      }
     };
   } catch (error) {
     console.error("Error fetching problem:", error);
@@ -39,16 +40,26 @@ export async function fetchProblemById(id: string): Promise<ApiResponse<Problem>
 export async function updateProblem(
   id: string,
   updates: Partial<Problem>
-): Promise<ApiResponse<void>> {
+): Promise<any> {
   try {
     const docRef = doc(db, "problems", id);
+    
+    // Convert categories array to object with boolean values
+    const categoriesUpdate = updates.categories 
+      ? updates.categories.reduce((acc, category) => ({
+          ...acc,
+          [category]: true
+        }), {})
+      : undefined;
+
     const updateData = {
       ...(updates.displayTitle && { displayTitle: updates.displayTitle }),
-      ...(updates.category && { category: updates.category }),
+      ...(updates.categories && { categories: categoriesUpdate }),
       ...(updates.difficulty !== undefined && { difficulty: updates.difficulty }),
       ...(updates.content?.title && { title: updates.content.title }),
       ...(updates.content?.description && { description: updates.content.description }),
       ...(updates.content?.solution && { solution: updates.content.solution }),
+      ...(updates.searchableTitle && { searchableTitle: updates.searchableTitle }),
     };
 
     await updateDoc(docRef, updateData);
@@ -59,13 +70,4 @@ export async function updateProblem(
   }
 }
 
-export async function checkProblemExists(id: string): Promise<boolean> {
-  try {
-    const docRef = doc(db, "problems", id);
-    const docSnap = await getDoc(docRef);
-    return docSnap.exists();
-  } catch (error) {
-    console.error("Error checking problem existence:", error);
-    return false;
-  }
-}
+// ... rest of the code ...

@@ -1,11 +1,14 @@
-import PlayGroundComponent from '@/components/PlaygroundPage/PlayGroundPage'
+import { redirect } from 'next/navigation';
+import { Metadata } from 'next';
 
-export default async function PlayGroundPage({
-  params,
+export const metadata: Metadata = {
+    title: 'Problem',
+};
+
+export default function ProblemPage({
+    params,
 }: {
-  params: { id: string };  
-}){
-  return (
-    <PlayGroundComponent id={params.id} />
-  )
+    params: { id: string; locale: string };
+}) {
+    redirect(`/${params.locale}/problems/${params.id}/description`);
 }

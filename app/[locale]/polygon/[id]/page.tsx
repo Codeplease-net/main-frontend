@@ -1,4 +1,4 @@
-import PolygonProgram from "@/components/PolygonPage/Problem/Polygon";
+import ProblemDetail from "@/components/PolygonPage/Problem";
 import { LanguageCode } from "@/components/PolygonPage/types/language";
 
 interface PageProps {
@@ -13,6 +13,11 @@ export default async function PolygonPage({
     const lang = (searchParams.lang || 'en') as LanguageCode;
 
   return (
-    <PolygonProgram id={params.id} lang={lang}/>
+    <>
+      <head>
+        <title>{`${params.id}`}</title>
+      </head>
+      <ProblemDetail id={params.id} lang={lang}/>
+    </>
   )
 }
