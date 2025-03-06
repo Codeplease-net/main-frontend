@@ -1,1 +1,0 @@
-self.__RSC_SERVER_MANIFEST="{\"node\":{\"f0d1fcc412f295cccb58296c920b936395a9cfd2\":{\"workers\":{\"app/[locale]/polygon/page\":\"62333\"},\"layer\":{\"app/[locale]/polygon/page\":\"action-browser\"}}},\"edge\":{},\"encryptionKey\":\"process.env.NEXT_SERVER_ACTIONS_ENCRYPTION_KEY\"}"
