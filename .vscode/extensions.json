@@ -1,0 +1,10 @@
+{
+    "recommendations": [
+        "visualstudioexptteam.vscodeintellicode",
+        "dbaeumer.vscode-eslint",
+        "christian-kohler.npm-intellisense",
+        "esbenp.prettier-vscode",
+        "yoavbls.pretty-ts-errors",
+        "bradlc.vscode-tailwindcss"
+    ]
+}
