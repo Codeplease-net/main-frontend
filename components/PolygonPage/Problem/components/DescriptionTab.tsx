@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { SUPPORTED_LANGUAGES, LanguageCode } from "../types/language";
 import { useRouter, useSearchParams } from "next/navigation";
+import { CheckCircle, Loader2, Save, X } from "lucide-react";
 
 import {
   AlertDialog,
@@ -24,7 +25,7 @@ import { cn } from "@/lib/utils";
 import { FitEditorLatex } from "@/components/ui/description/fit-editor";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Save, ChevronDown, FileText, Lightbulb, Globe } from "lucide-react";
+import { ChevronDown, FileText, Lightbulb, Globe } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -57,6 +58,7 @@ export function DescriptionTab({
   const router = useRouter();
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<string>("description");
+  const [saveSuccess, setSaveSuccess] = useState<boolean | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
   const [localContent, setLocalContent] = useState({
@@ -95,6 +97,8 @@ export function DescriptionTab({
   const handleUpdate = async () => {
     try {
       setIsSaving(true);
+      setSaveSuccess(null);
+      
       await onUpdate({
         content: {
           ...problem.content,
@@ -109,11 +113,22 @@ export function DescriptionTab({
           },
         },
       });
+      
+      // Set success state
+      setSaveSuccess(true);
+      
       toast({
         title: "Success",
         description: `Content in ${currentLanguageName} updated successfully`,
       });
+      
+      // Reset success state after 3 seconds
+      setTimeout(() => {
+        setSaveSuccess(null);
+      }, 3000);
+      
     } catch (error) {
+      setSaveSuccess(false);
       toast({
         title: "Error",
         description: "Failed to update content",
@@ -265,43 +280,86 @@ export function DescriptionTab({
         </Card>
 
         {/* Action Footer */}
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 w-full bg-card border border-border/60 rounded-lg px-4 py-3 shadow-md">
-            <div className="text-sm text-muted-foreground order-2 sm:order-1 text-center sm:text-left">
-              <p><span className="font-medium text-foreground">Note:</span> Changes will only affect content in {currentLanguageName}.</p>
-              <p className="text-xs mt-1">You can switch languages using the dropdown menu.</p>
-            </div>
-            
-            <div className="order-1 sm:order-2 w-full sm:w-auto">
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button 
-                    disabled={isLoading || isSaving}
-                    className="flex items-center gap-2 w-full sm:w-auto h-10 px-6"
-                  >
-                    <Save className="h-4 w-4" />
-                    {isSaving ? "Saving..." : "Save Changes"}
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Save Changes?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This will update problem content in {currentLanguageName} language. Other language versions will remain unchanged.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter className="mt-4">
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction 
-                      onClick={handleUpdate}
-                      className="bg-primary text-primary-foreground hover:bg-primary/90"
-                    >
-                      Save Changes
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </div>
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 w-full bg-card border border-border/60 rounded-lg px-4 py-3 shadow-md">
+          <div className="text-sm text-muted-foreground order-2 sm:order-1 text-center sm:text-left">
+            <p><span className="font-medium text-foreground">Note:</span> Changes will only affect content in {currentLanguageName}.</p>
+            <p className="text-xs mt-1">You can switch languages using the dropdown menu.</p>
           </div>
+          
+          <div className="order-1 sm:order-2 w-full sm:w-auto">
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button 
+                  disabled={isLoading || isSaving}
+                  className={cn(
+                    "flex items-center gap-2 w-full sm:w-auto h-10 px-6",
+                    "transition-all duration-200 relative overflow-hidden",
+                    saveSuccess === true && "bg-emerald-600 hover:bg-emerald-700",
+                    saveSuccess === false && "bg-destructive hover:bg-destructive/90",
+                    isSaving && "opacity-80",
+                    "shadow hover:shadow-md hover:scale-[1.01] active:scale-[0.98]"
+                  )}
+                >
+                  {isSaving ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <span>Saving...</span>
+                    </>
+                  ) : saveSuccess === true ? (
+                    <>
+                      <CheckCircle className="h-4 w-4" />
+                      <span>Saved Successfully</span>
+                      {/* Success animation overlay */}
+                      <span className="absolute inset-0 bg-emerald-500/20 animate-pulse-once" />
+                    </>
+                  ) : saveSuccess === false ? (
+                    <>
+                      <X className="h-4 w-4" />
+                      <span>Save Failed - Retry</span>
+                    </>
+                  ) : (
+                    <>
+                      <Save className="h-4 w-4" />
+                      <span>Save Changes</span>
+                    </>
+                  )}
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Save Changes?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This will update problem content in {currentLanguageName} language. Other language versions will remain unchanged.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter className="mt-4">
+                  <AlertDialogCancel 
+                    disabled={isSaving}
+                  >
+                    Cancel
+                  </AlertDialogCancel>
+                  <AlertDialogAction 
+                    onClick={handleUpdate}
+                    disabled={isSaving}
+                    className={cn(
+                      "bg-primary text-primary-foreground hover:bg-primary/90",
+                      isSaving && "opacity-80 cursor-not-allowed"
+                    )}
+                  >
+                    {isSaving ? (
+                      <div className="flex items-center gap-2">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <span>Saving...</span>
+                      </div>
+                    ) : (
+                      "Save Changes"
+                    )}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
+        </div>
       </div>
     </div>
   );

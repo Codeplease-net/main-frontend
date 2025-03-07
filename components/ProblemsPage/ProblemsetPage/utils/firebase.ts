@@ -81,7 +81,6 @@ export async function getProblems(filters?: ProblemFilters): Promise<{
           .map(([category]) => category);
         return {
           id: document.id,
-          status: data.status,
           displayTitle: data.displayTitle,
           categories: activeCategories,
           difficulty: data.difficulty,

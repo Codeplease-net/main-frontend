@@ -12,6 +12,13 @@
     "Admin Console": "Admin Console"
   },
   "Auth": {
+    "fullName": "Full Name",
+    "country": "Country",
+    "selectCountry": "Select your country",
+    "birthdate": "Birthdate",
+    "ageRequirement": "You must be at least 5 years old to create an account",
+    "emailVerificationRequired": "Email verification required",
+    "youMustVerifyEmail": "You must verify your email before signing in",
     "fieldsRequired": "All fields are required",
     "loginSuccess": "Login successful! Redirecting...",
     "invalidEmail": "Invalid email address",
@@ -54,7 +61,15 @@
     "handleDescription": "Choose a unique username that will be displayed to others",
     "passwordHint": "At least 8 characters with uppercase, lowercase, and number",
     "confirmPassword": "Confirm Password",
-    "creatingAccount": "Creating account..."
+    "creatingAccount": "Creating account...",
+    "emailNotVerified": "Email not verified",
+    "checkYourEmail": "Check your email for a verification link",
+    "verificationEmailSent": "Verification email sent",
+    "checkSpamFolderNotice": "If you don't see the email, check your spam folder",
+    "didntReceiveEmail": "Didn't receive the email?",
+    "tryAgain": "Try again",
+    "welcomeTo": "Welcome to CodePlease",
+    "accountPlatformDesc": "Empowering developers through competitive programming and problem-solving challenges. Join our community today!"
   },
   "Footer": {
     "Resources & Legal": "Resources & Legal",
@@ -209,6 +224,9 @@
     "Beginner": "Beginner",
     "Intermediate": "Intermediate",
     "Topics": "Topics",
+    "topics": "topics",
+    "topic": "topic",
+    "Filters": "Filters",
     "Brute Force": "Brute Force",
     "Binary Search": "Binary Search",
     "Greedy": "Greedy",
@@ -261,6 +279,7 @@
     "TernarySearchDesc": "Optimization technique that reduces search space into three parts"
   },
   "Playground": {
+    "statusText": "Status",
     "backToEditor": "Back to Editor",
     "loadingSubmission": "Loading submission details...",
     "submissionTimeout": "Submission is taking longer than expected. Please check back later.",
@@ -278,6 +297,8 @@
     "status": {
       "accepted": "Accepted",
       "wrongAnswer": "Wrong Answer",
+      "timeLimitExceeded": "Time Limit Exceeded",
+      "runtimeError": "Runtime Error",
       "timeLimit": "Time Limit Exceeded",
       "runtime": "Runtime Error",
       "memoryLimit": "Memory Limit Exceeded",

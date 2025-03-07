@@ -14,11 +14,12 @@ import {
   AlertDialogHeader,
   AlertDialogFooter,
 } from "@/components/ui/alert-dialog";
-import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
 import { categories } from "@/components/ProblemsPage/ProblemsetPage/utils/categories";
 import { Slider } from "@/components/ui/slider";
+import { toast } from "@/components/ui/use-toast";
 
 interface GeneralTabProps {
   problem: Problem;
@@ -28,12 +29,20 @@ interface GeneralTabProps {
 
 export function GeneralTab({ problem, isLoading, onUpdate }: GeneralTabProps) {
   const [localProblem, setLocalProblem] = useState<Problem>(problem);
+  const [isUpdating, setIsUpdating] = useState<boolean>(false);
+  const [alertOpen, setAlertOpen] = useState<boolean>(false);
+  const [updateSuccess, setUpdateSuccess] = useState<boolean | null>(null);
 
   useEffect(() => {
     setLocalProblem(problem);
   }, [problem]);
 
   const handleInputChange = (field: keyof Problem, value: any) => {
+    // Reset update success state when user makes changes
+    if (updateSuccess !== null) {
+      setUpdateSuccess(null);
+    }
+    
     setLocalProblem((prev) => ({
       ...prev,
       [field]: value,
@@ -41,7 +50,32 @@ export function GeneralTab({ problem, isLoading, onUpdate }: GeneralTabProps) {
   };
 
   const handleSubmit = async () => {
-    await onUpdate(localProblem);
+    try {
+      setIsUpdating(true);
+      setUpdateSuccess(null);
+      await onUpdate(localProblem);
+      setUpdateSuccess(true);
+      
+      toast({
+        title: "Problem updated successfully",
+        description: "Your changes have been saved.",
+        variant: "default",
+      });
+      
+      // Close dialog after successful update
+      setAlertOpen(false);
+    } catch (error) {
+      console.error("Error updating problem:", error);
+      setUpdateSuccess(false);
+      
+      toast({
+        title: "Failed to update problem",
+        description: "An error occurred while saving your changes. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUpdating(false);
+    }
   };
 
   const handleDifficultyChange = (value: number) => {
@@ -52,6 +86,9 @@ export function GeneralTab({ problem, isLoading, onUpdate }: GeneralTabProps) {
     );
     return normalizedValue;
   };
+
+  // Check if any changes have been made compared to the original problem
+  const hasChanges = JSON.stringify(problem) !== JSON.stringify(localProblem);
 
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)] overflow-auto bg-dot-pattern">
@@ -109,13 +146,13 @@ export function GeneralTab({ problem, isLoading, onUpdate }: GeneralTabProps) {
                   min={100}
                   max={2000}
                   step={100}
-                  disabled={isLoading}
+                  disabled={isLoading || isUpdating}
                   onValueChange={([value]) => {
                     handleInputChange("difficulty", value);
                   }}
                   className={cn(
                     "py-2",
-                    isLoading ? "opacity-50" : "opacity-100",
+                    (isLoading || isUpdating) ? "opacity-50" : "opacity-100",
                     "transition-opacity duration-200"
                   )}
                 />
@@ -136,7 +173,7 @@ export function GeneralTab({ problem, isLoading, onUpdate }: GeneralTabProps) {
               placeholder="Enter display title..."
               value={localProblem.displayTitle}
               onChange={(e) => handleInputChange("displayTitle", e.target.value)}
-              disabled={isLoading}
+              disabled={isLoading || isUpdating}
               className="bg-card/50 border-input/50 h-10"
             />
           </div>
@@ -158,7 +195,7 @@ export function GeneralTab({ problem, isLoading, onUpdate }: GeneralTabProps) {
                         : [...(localProblem.categories || []), category.code];
                       handleInputChange("categories", updatedCategories);
                     }}
-                    disabled={isLoading}
+                    disabled={isLoading || isUpdating}
                     className={cn(
                       "inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium",
                       "transition-all duration-200",
@@ -184,31 +221,46 @@ export function GeneralTab({ problem, isLoading, onUpdate }: GeneralTabProps) {
 
           {/* Action Button */}
           <div className="flex justify-end pt-4">
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button
-                  variant="default"
-                  disabled={isLoading}
-                  className={cn(
-                    "min-w-[160px] h-11",
-                    "transition-all duration-200",
-                    "hover:scale-102 active:scale-98",
-                    "shadow-sm hover:shadow-md",
-                    isLoading && "opacity-50 cursor-not-allowed"
-                  )}
-                >
-                  {isLoading ? (
-                    <div className="flex items-center gap-2">
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                      <span>Processing...</span>
-                    </div>
-                  ) : (
-                    <span>Update Problem</span>
-                  )}
-                </Button>
-              </AlertDialogTrigger>
-
-              <AlertDialogContent className="sm:max-w-[400px]">
+            <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
+            <AlertDialogTrigger asChild>
+  <Button
+    variant="default"
+    disabled={isLoading || isUpdating || (!hasChanges && updateSuccess !== true)}
+    className={cn(
+      "min-w-[160px] h-11 transition-all duration-200",
+      updateSuccess === true && "bg-emerald-600 hover:bg-emerald-700",
+      !hasChanges && updateSuccess !== true && "opacity-50",
+      hasChanges && "animate-subtle-pulse hover:scale-[1.01] active:scale-[0.98]",
+      "shadow hover:shadow-md relative overflow-hidden"
+    )}
+  >
+    {isLoading ? (
+      <div className="flex items-center gap-2">
+        <Loader2 className="h-4 w-4 animate-spin" />
+        <span>Loading...</span>
+      </div>
+    ) : isUpdating ? (
+      <div className="flex items-center gap-2">
+        <Loader2 className="h-4 w-4 animate-spin" />
+        <span>Updating...</span>
+      </div>
+    ) : updateSuccess === true ? (
+      <div className="flex items-center gap-2">
+        <CheckCircle className="h-4 w-4" />
+        <span>Updated Successfully</span>
+      </div>
+    ) : hasChanges ? (
+      <span>Save Changes</span>
+    ) : (
+      <span>No Changes</span>
+    )}
+    
+    {/* Success animation overlay */}
+    {updateSuccess === true && (
+      <span className="absolute inset-0 bg-emerald-500/20 animate-pulse-once" />
+    )}
+  </Button>
+</AlertDialogTrigger>              <AlertDialogContent className="sm:max-w-[400px]">
                 <AlertDialogHeader>
                   <AlertDialogTitle>Confirm Action</AlertDialogTitle>
                   <AlertDialogDescription>
@@ -216,11 +268,25 @@ export function GeneralTab({ problem, isLoading, onUpdate }: GeneralTabProps) {
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter className="gap-2">
-                  <AlertDialogCancel className="hover:bg-secondary/80">
+                  <AlertDialogCancel 
+                    className="hover:bg-secondary/80"
+                    disabled={isUpdating}
+                  >
                     Cancel
                   </AlertDialogCancel>
-                  <AlertDialogAction onClick={handleSubmit}>
-                    Update
+                  <AlertDialogAction 
+                    onClick={handleSubmit}
+                    disabled={isUpdating}
+                    className={isUpdating ? "opacity-50 cursor-not-allowed" : ""}
+                  >
+                    {isUpdating ? (
+                      <div className="flex items-center gap-2">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <span>Updating...</span>
+                      </div>
+                    ) : (
+                      "Update"
+                    )}
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>

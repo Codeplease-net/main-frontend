@@ -8,7 +8,6 @@ export interface Problem {
     displayTitle: any;
     categories: string[];
     difficulty: number;
-    status?: string;
 }
   
 export interface ProblemFilters {

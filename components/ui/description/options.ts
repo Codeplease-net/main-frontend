@@ -332,6 +332,27 @@ export function completionItemProviderMathJaxLatex(monaco: typeof import('monaco
         documentation: 'Itemize list'
       },
       {
+        label: '\\begin{center} \\end{center}',
+        kind: monaco.languages.CompletionItemKind.Snippet,
+        insertText: '\\begin{center}\n \n\\end{center}',
+        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+        documentation: 'Center Text'
+      },
+      {
+        label: '\\begin{detail} \\end{detail}',
+        kind: monaco.languages.CompletionItemKind.Snippet,
+        insertText: '\\begin{detail}\n\t\\summary \n\\end{detail}',
+        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+        documentation: 'Create Detail'
+      },
+      {
+        label: '\\begin{example} \\end{example}',
+        kind: monaco.languages.CompletionItemKind.Snippet,
+        insertText: '\\begin{example}\n \n\\end{example}',
+        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+        documentation: 'Create Example'
+      },
+      {
         label: '\\begin{enumerate} \\end{enumerate}',
         kind: monaco.languages.CompletionItemKind.Snippet,
         insertText: '\\begin{enumerate}\n\t\\item \n\\end{enumerate}',
@@ -351,6 +372,13 @@ export function completionItemProviderMathJaxLatex(monaco: typeof import('monaco
           insertText: '\\begin{java}\n\t${1:code}\n\\end{java}',
           insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
           documentation: 'Java code block'
+        },
+        {
+          label: '\\begin{python}    \\end{python}',
+          kind: monaco.languages.CompletionItemKind.Snippet,
+          insertText: '\\begin{python}\n\t${1:code}\n\\end{python}',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          documentation: 'Python code block'
         },
         {
           label: '\\begin{python}    \\end{python}',

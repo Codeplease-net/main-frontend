@@ -1,7 +1,9 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
   "/icon.png/route": "app/icon.png/route.js",
-  "/[locale]/page": "app/[locale]/page.js",
+  "/[locale]/problems/page": "app/[locale]/problems/page.js",
+  "/[locale]/problems/[id]/[tab]/page": "app/[locale]/problems/[id]/[tab]/page.js",
   "/[locale]/polygon/page": "app/[locale]/polygon/page.js",
-  "/[locale]/polygon/[id]/page": "app/[locale]/polygon/[id]/page.js"
+  "/[locale]/polygon/[id]/page": "app/[locale]/polygon/[id]/page.js",
+  "/[locale]/page": "app/[locale]/page.js",
+  "/[locale]/topics/page": "app/[locale]/topics/page.js"
 }

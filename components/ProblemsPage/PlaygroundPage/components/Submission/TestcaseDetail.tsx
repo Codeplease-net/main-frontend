@@ -130,7 +130,7 @@ export default function TestcaseDetail({ testCases }: TestResultsProps) {
                   #
                 </TableHead>
                 <TableHead className="text-xs font-semibold text-muted-foreground sticky top-0 bg-inherit z-10">
-                  {t("status")}
+                  {t("statusText")}
                 </TableHead>
                 <TableHead className="text-xs font-semibold text-muted-foreground text-right sticky top-0 bg-inherit z-10">
                   {t("time")}

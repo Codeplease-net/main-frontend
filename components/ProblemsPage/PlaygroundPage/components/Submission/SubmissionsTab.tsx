@@ -27,11 +27,9 @@ import {
 // Icons
 import {
   Filter,
-  ChevronRight,
   CheckCircle,
   Clock,
   Database,
-  X,
   User,
   Eye,
 } from "lucide-react";

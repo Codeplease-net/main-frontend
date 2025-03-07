@@ -31,6 +31,13 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { FileUp, ZapIcon, FolderOpen } from "lucide-react";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
 
 interface TestcasesTabProps {
   problemId: string;
@@ -74,6 +81,15 @@ export function TestcasesTab({ problemId }: TestcasesTabProps) {
     outputFile: null as File | null,
     score: 0,
   });
+
+  const [isUploadingBulk, setIsUploadingBulk] = useState(false);
+  const [batchTestCases, setBatchTestCases] = useState<Array<{
+    input: string, 
+    output: string, 
+    inputFile: File | null,
+    outputFile: File | null,
+    score: number
+  }>>([]);
 
   // Common score presets for quick selection
   const scorePresets = [0, 5, 10, 20, 25, 33, 50, 100];
@@ -140,62 +156,183 @@ export function TestcasesTab({ problemId }: TestcasesTabProps) {
     }
   };
 
-  const handleAddTest = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsAddingTestCase(true);
-    
-    try {
-      const form = new FormData();
-      form.append("name", problemId);
-      if (newTestCase.inputFile) {
-        form.append("input_file", newTestCase.inputFile);
-      } else if (newTestCase.input) {
-        const inputBlob = new Blob([newTestCase.input], { type: 'text/plain' });
-        const inputFile = new File([inputBlob], 'input.txt', { type: 'text/plain' });
-        form.append("input_file", inputFile);
-      }
-  
-      // Handle output - use file if provided, otherwise convert textarea content to file
-      if (newTestCase.outputFile) {
-        form.append("output_file", newTestCase.outputFile);
-      } else if (newTestCase.output) {
-        const outputBlob = new Blob([newTestCase.output], { type: 'text/plain' });
-        const outputFile = new File([outputBlob], 'output.txt', { type: 'text/plain' });
-        form.append("output_file", outputFile);
-      }
-  
-      form.append("score", newTestCase.score.toString());
-
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_JUDGE0_API_KEY}/testcases/add`,
-        form
-      );
-
+  const addToBatch = () => {
+    // Validate current test case
+    if ((!newTestCase.input && !newTestCase.inputFile) || 
+        (!newTestCase.output && !newTestCase.outputFile)) {
       toast({
-        title: "Success",
-        description: "Test case added successfully",
-      });
-
-      // Reset form and close dialog
-      setNewTestCase({
-        input: "",
-        output: "",
-        inputFile: null,
-        outputFile: null,
-        score: 0,
-      });
-      setOpen(false);
-      fetchConfig(); // Refresh the test cases list
-    } catch (error) {
-      console.error("Error adding test case:", error);
-      toast({
-        title: "Error",
-        description: "Failed to add test case",
+        title: "Incomplete test case",
+        description: "Both input and output are required for test cases",
         variant: "destructive",
       });
-    } finally {
-      setIsAddingTestCase(false);
+      return;
     }
+    
+    // Add to batch
+    setBatchTestCases([...batchTestCases, { ...newTestCase }]);
+    
+    // Reset form for next test case
+    setNewTestCase({
+      input: "",
+      output: "",
+      inputFile: null,
+      outputFile: null,
+      score: newTestCase.score, // Keep the same score for convenience
+    });
+    
+    toast({
+      title: "Added to batch",
+      description: `Test case added to batch (${batchTestCases.length + 1} total)`,
+    });
+  };
+
+  const handleAddTest = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Check if we have a batch or single test case
+    const hasBatch = batchTestCases.length > 0;
+    
+    // If we have a batch but the current form also has data, ask to add it
+    if (hasBatch && (newTestCase.input || newTestCase.output || 
+        newTestCase.inputFile || newTestCase.outputFile)) {
+      // Ask if user wants to include the current form in the batch
+      if (confirm("Would you like to add the current test case to the batch before uploading?")) {
+        addToBatch();
+      }
+    }
+    
+    // If we're uploading a single test case with no batch
+    if (!hasBatch) {
+      setIsAddingTestCase(true);
+      try {
+        const form = new FormData();
+        form.append("name", problemId);
+        if (newTestCase.inputFile) {
+          form.append("input_file", newTestCase.inputFile);
+        } else if (newTestCase.input) {
+          const inputBlob = new Blob([newTestCase.input], { type: 'text/plain' });
+          const inputFile = new File([inputBlob], 'input.txt', { type: 'text/plain' });
+          form.append("input_file", inputFile);
+        }
+    
+        if (newTestCase.outputFile) {
+          form.append("output_file", newTestCase.outputFile);
+        } else if (newTestCase.output) {
+          const outputBlob = new Blob([newTestCase.output], { type: 'text/plain' });
+          const outputFile = new File([outputBlob], 'output.txt', { type: 'text/plain' });
+          form.append("output_file", outputFile);
+        }
+    
+        form.append("score", newTestCase.score.toString());
+
+        await axios.post(
+          `${process.env.NEXT_PUBLIC_JUDGE0_API_KEY}/testcases/add`,
+          form
+        );
+
+        toast({
+          title: "Success",
+          description: "Test case added successfully",
+        });
+
+        // Reset form and close dialog
+        setNewTestCase({
+          input: "",
+          output: "",
+          inputFile: null,
+          outputFile: null,
+          score: 0,
+        });
+        setOpen(false);
+        fetchConfig(); // Refresh the test cases list
+      } catch (error) {
+        console.error("Error adding test case:", error);
+        toast({
+          title: "Error",
+          description: "Failed to add test case",
+          variant: "destructive",
+        });
+      } finally {
+        setIsAddingTestCase(false);
+      }
+    } 
+    // If we have a batch to upload
+    else {
+      setIsUploadingBulk(true);
+      
+      try {
+        // Upload each test case in sequence
+        for (let i = 0; i < batchTestCases.length; i++) {
+          const testCase = batchTestCases[i];
+          
+          const form = new FormData();
+          form.append("name", problemId);
+          
+          // Input file handling
+          if (testCase.inputFile) {
+            form.append("input_file", testCase.inputFile);
+          } else if (testCase.input) {
+            const inputBlob = new Blob([testCase.input], { type: 'text/plain' });
+            const inputFile = new File([inputBlob], 'input.txt', { type: 'text/plain' });
+            form.append("input_file", inputFile);
+          }
+          
+          // Output file handling
+          if (testCase.outputFile) {
+            form.append("output_file", testCase.outputFile);
+          } else if (testCase.output) {
+            const outputBlob = new Blob([testCase.output], { type: 'text/plain' });
+            const outputFile = new File([outputBlob], 'output.txt', { type: 'text/plain' });
+            form.append("output_file", outputFile);
+          }
+          
+          form.append("score", testCase.score.toString());
+          
+          await axios.post(
+            `${process.env.NEXT_PUBLIC_JUDGE0_API_KEY}/testcases/add`,
+            form
+          );
+          
+          // Update progress toast
+          toast({
+            title: "Progress",
+            description: `Uploaded test case ${i + 1} of ${batchTestCases.length}`,
+          });
+        }
+        
+        toast({
+          title: "Success",
+          description: `Successfully uploaded ${batchTestCases.length} test cases`,
+        });
+        
+        // Reset form and close dialog
+        setBatchTestCases([]);
+        setNewTestCase({
+          input: "",
+          output: "",
+          inputFile: null,
+          outputFile: null,
+          score: 0,
+        });
+        setOpen(false);
+        fetchConfig(); // Refresh the test cases list
+      } catch (error) {
+        console.error("Error adding test cases:", error);
+        toast({
+          title: "Error",
+          description: "Failed to add test cases",
+          variant: "destructive",
+        });
+      } finally {
+        setIsUploadingBulk(false);
+      }
+    }
+  };
+
+  const removeBatchTestCase = (index: number) => {
+    const updated = [...batchTestCases];
+    updated.splice(index, 1);
+    setBatchTestCases(updated);
   };
 
   useEffect(() => {
@@ -295,137 +432,285 @@ export function TestcasesTab({ problemId }: TestcasesTabProps) {
       {/* Test Cases Section */}
       <div className="flex justify-between items-center mt-2">
         <h2 className="text-lg font-medium">Test Cases ({config.test_cases.length})</h2>
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            <Button className="flex items-center gap-2">
-              <Plus className="h-4 w-4" />
-              Add Test Case
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-4xl">
-            <DialogHeader>
-              <DialogTitle>Add New Test Case</DialogTitle>
-              <DialogDescription>
-                Create a new test case with input, output and score.
-              </DialogDescription>
-            </DialogHeader>
-            
-            <form className="space-y-4" onSubmit={handleAddTest}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Left Column - Input */}
-                <div className="space-y-3">
+        <div className="flex items-center">
+          <Dialog open={open} onOpenChange={(isOpen) => {
+            if (!isOpen) {
+              // When closing dialog, clear the batch
+              setBatchTestCases([]);
+            }
+            setOpen(isOpen);
+          }}>
+            <DialogTrigger asChild>
+              <Button className="flex items-center gap-2">
+                <Plus className="h-4 w-4" />
+                Add Test Case
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>Add Test Cases</DialogTitle>
+                <DialogDescription>
+                  Create one or multiple test cases with input, output and score.
+                </DialogDescription>
+              </DialogHeader>
+              
+              <form className="space-y-6" onSubmit={handleAddTest}>
+                {/* Current Test Case Form */}
+                <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <Label htmlFor="input" className="text-sm font-medium">Input</Label>
-                    <Badge variant="outline" className="font-normal">Required</Badge>
+                    <h3 className="text-base font-medium">
+                      {batchTestCases.length > 0 ? "Add Another Test Case" : "New Test Case"}
+                    </h3>
+                    {batchTestCases.length > 0 && (
+                      <Badge variant="secondary" className="font-mono">
+                        {batchTestCases.length} in batch
+                      </Badge>
+                    )}
                   </div>
                   
-                  <div className="relative">
-                    <Input
-                      type="file"
-                      onChange={(e) => setNewTestCase({...newTestCase, inputFile: e.target.files?.[0] || null})}
-                      className="w-full"
-                      accept=".txt,.in,.inp"
-                      disabled={isAddingTestCase}
-                    />
-                    <div className="my-2 text-center text-xs text-muted-foreground">— OR —</div>
-                  </div>
-                  
-                  <Textarea
-                    id="input"
-                    placeholder="Enter test case input..."
-                    value={newTestCase.input}
-                    onChange={(e) => setNewTestCase({ ...newTestCase, input: e.target.value })}
-                    className="font-mono min-h-[200px]"
-                    disabled={isAddingTestCase}
-                  />
-                </div>
-
-                {/* Right Column - Output */}
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="output" className="text-sm font-medium">Expected Output</Label>
-                    <Badge variant="outline" className="font-normal">Required</Badge>
-                  </div>
-                  
-                  <div className="relative">
-                    <Input
-                      type="file"
-                      onChange={(e) => setNewTestCase({...newTestCase, outputFile: e.target.files?.[0] || null})}
-                      className="w-full"
-                      accept=".txt,.out"
-                      disabled={isAddingTestCase}
-                    />
-                    <div className="my-2 text-center text-xs text-muted-foreground">— OR —</div>
-                  </div>
-                  
-                  <Textarea
-                    id="output"
-                    placeholder="Enter expected output..."
-                    value={newTestCase.output}
-                    onChange={(e) => setNewTestCase({ ...newTestCase, output: e.target.value })}
-                    className="font-mono min-h-[200px]"
-                    disabled={isAddingTestCase}
-                  />
-                </div>
-              </div>
-
-              {/* Score Input */}
-              <div className="flex items-center gap-4 pt-4 border-t">
-                <div className="w-full">
-                  <div className="flex items-center justify-between mb-2">
-                    <Label htmlFor="score" className="text-sm">Score</Label>
-                    <span className="text-xs text-muted-foreground">Default: 0</span>
-                  </div>
-                  
-                  <div className="flex flex-wrap gap-2 mb-2">
-                    {scorePresets.map((preset) => (
-                      <Button
-                        key={preset}
-                        type="button"
-                        size="sm"
-                        variant={newTestCase.score === preset ? "default" : "outline"}
-                        className="h-8 px-3"
-                        onClick={() => setNewTestCase({...newTestCase, score: preset})}
-                        disabled={isAddingTestCase}
-                      >
-                        {preset}
-                      </Button>
-                    ))}
-                    <div className="relative flex items-center max-w-[160px]">
-                      <Input
-                        id="score"
-                        type="number"
-                        min="0"
-                        placeholder="Custom score..."
-                        value={!scorePresets.includes(newTestCase.score) && newTestCase.score !== 0 ? newTestCase.score : ""}
-                        onChange={(e) => {
-                          const value = e.target.value.trim() === "" ? 0 : parseInt(e.target.value);
-                          setNewTestCase({...newTestCase, score: isNaN(value) ? 0 : value})
-                        }}
-                        className="h-8 pr-16"
-                        disabled={isAddingTestCase}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Left Column - Input */}
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="input" className="text-sm font-medium">Input</Label>
+                        <Badge variant="outline" className="font-normal">Required</Badge>
+                      </div>
+                      
+                      <div className="relative">
+                        <Input
+                          type="file"
+                          onChange={(e) => setNewTestCase({...newTestCase, inputFile: e.target.files?.[0] || null})}
+                          className="w-full"
+                          accept=".txt,.in,.inp"
+                          disabled={isAddingTestCase || isUploadingBulk}
+                        />
+                        <div className="my-2 text-center text-xs text-muted-foreground">— OR —</div>
+                      </div>
+                      
+                      <Textarea
+                        id="input"
+                        placeholder="Enter test case input..."
+                        value={newTestCase.input}
+                        onChange={(e) => setNewTestCase({ ...newTestCase, input: e.target.value })}
+                        className="font-mono min-h-[140px]"
+                        disabled={isAddingTestCase || isUploadingBulk}
                       />
-                      <span className="absolute right-3 text-xs text-muted-foreground">points</span>
+                    </div>
+
+                    {/* Right Column - Output */}
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="output" className="text-sm font-medium">Expected Output</Label>
+                        <Badge variant="outline" className="font-normal">Required</Badge>
+                      </div>
+                      
+                      <div className="relative">
+                        <Input
+                          type="file"
+                          onChange={(e) => setNewTestCase({...newTestCase, outputFile: e.target.files?.[0] || null})}
+                          className="w-full"
+                          accept=".txt,.out"
+                          disabled={isAddingTestCase || isUploadingBulk}
+                        />
+                        <div className="my-2 text-center text-xs text-muted-foreground">— OR —</div>
+                      </div>
+                      
+                      <Textarea
+                        id="output"
+                        placeholder="Enter expected output..."
+                        value={newTestCase.output}
+                        onChange={(e) => setNewTestCase({ ...newTestCase, output: e.target.value })}
+                        className="font-mono min-h-[140px]"
+                        disabled={isAddingTestCase || isUploadingBulk}
+                      />
                     </div>
                   </div>
+
+                  {/* Score Input */}
+                  <div className="flex items-center gap-4 pt-4 border-t">
+                    <div className="w-full">
+                      <div className="flex items-center justify-between mb-2">
+                        <Label htmlFor="score" className="text-sm">Score</Label>
+                        <span className="text-xs text-muted-foreground">Default: 0</span>
+                      </div>
+                      
+                      <div className="flex flex-wrap gap-2 mb-2">
+                        {scorePresets.map((preset) => (
+                          <Button
+                            key={preset}
+                            type="button"
+                            size="sm"
+                            variant={newTestCase.score === preset ? "default" : "outline"}
+                            className="h-8 px-3"
+                            onClick={() => setNewTestCase({...newTestCase, score: preset})}
+                            disabled={isAddingTestCase || isUploadingBulk}
+                          >
+                            {preset}
+                          </Button>
+                        ))}
+                        <div className="relative flex items-center max-w-[160px]">
+                          <Input
+                            id="score"
+                            type="number"
+                            min="0"
+                            placeholder="Custom score..."
+                            value={!scorePresets.includes(newTestCase.score) && newTestCase.score !== 0 ? newTestCase.score : ""}
+                            onChange={(e) => {
+                              const value = e.target.value.trim() === "" ? 0 : parseInt(e.target.value);
+                              setNewTestCase({...newTestCase, score: isNaN(value) ? 0 : value})
+                            }}
+                            className="h-8 pr-16"
+                            disabled={isAddingTestCase || isUploadingBulk}
+                          />
+                          <span className="absolute right-3 text-xs text-muted-foreground">points</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Add to Batch Button */}
+                  <div className="flex justify-end">
+                    <Button 
+                      type="button" 
+                      variant="outline"
+                      onClick={addToBatch}
+                      disabled={isAddingTestCase || isUploadingBulk || 
+                        (!newTestCase.input && !newTestCase.inputFile) || 
+                        (!newTestCase.output && !newTestCase.outputFile)}
+                    >
+                      <Plus className="mr-2 h-4 w-4" />
+                      Add to Batch
+                    </Button>
+                  </div>
                 </div>
-              </div>
-              
-              <DialogFooter className="pt-2">
-                <Button type="submit" disabled={isAddingTestCase}>
-                  {isAddingTestCase ? (
-                    <span className="flex items-center gap-2">
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                      Creating...
-                    </span>
+                
+                {/* Batch Preview Section */}
+                {batchTestCases.length > 0 && (
+                  <div className="space-y-4 border-t pt-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-base font-medium">Batch Test Cases ({batchTestCases.length})</h3>
+                      {batchTestCases.length > 3 && (
+                        <span className="text-xs text-muted-foreground bg-muted/50 px-2 py-1 rounded-md">
+                          Scroll to see all {batchTestCases.length} test cases
+                        </span>
+                      )}
+                    </div>
+                    
+                    <div className="border rounded-md">
+                      <div className="max-h-[300px] overflow-auto">
+                        <table className="w-full text-sm">
+                          <thead className="sticky top-0 bg-card shadow-sm z-10">
+                            <tr className="border-b">
+                              <th className="text-left py-2 px-3 font-medium">#</th>
+                              <th className="text-left py-2 px-3 font-medium">Input Preview</th>
+                              <th className="text-left py-2 px-3 font-medium">Output Preview</th>
+                              <th className="text-left py-2 px-3 font-medium">Score</th>
+                              <th className="text-right py-2 px-3 font-medium">Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {batchTestCases.map((testCase, index) => (
+                              <tr key={index} className="border-b last:border-b-0 hover:bg-muted/20 transition-colors">
+                                <td className="py-2 px-3">
+                                  <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs">
+                                    {index + 1}
+                                  </div>
+                                </td>
+                                <td className="py-2 px-3">
+                                  <div className="max-w-[150px] truncate font-mono text-xs">
+                                    {testCase.inputFile ? 
+                                      `[File] ${testCase.inputFile.name}` : 
+                                      (testCase.input || "(empty)")}
+                                  </div>
+                                </td>
+                                <td className="py-2 px-3">
+                                  <div className="max-w-[150px] truncate font-mono text-xs">
+                                    {testCase.outputFile ? 
+                                      `[File] ${testCase.outputFile.name}` : 
+                                      (testCase.output || "(empty)")}
+                                  </div>
+                                </td>
+                                <td className="py-2 px-3">
+                                  <Badge variant="outline" className="font-mono">
+                                    {testCase.score}
+                                  </Badge>
+                                </td>
+                                <td className="py-2 px-3 text-right">
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="h-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+                                    onClick={() => removeBatchTestCase(index)}
+                                    disabled={isUploadingBulk}
+                                  >
+                                    <Trash2 className="h-4 w-4" />
+                                  </Button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                      
+                      {/* Batch summary footer */}
+                      <div className="bg-muted/20 p-3 border-t flex items-center justify-between">
+                        <span className="text-sm font-medium">
+                          Total: {batchTestCases.length} test case{batchTestCases.length !== 1 && 's'}
+                        </span>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-8 text-destructive hover:bg-destructive/10"
+                          onClick={() => setBatchTestCases([])}
+                          disabled={isUploadingBulk}
+                        >
+                          Clear All
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
+                <DialogFooter className="pt-2">
+                  {batchTestCases.length > 0 ? (
+                    <Button 
+                      type="submit" 
+                      disabled={isAddingTestCase || isUploadingBulk}
+                    >
+                      {isUploadingBulk ? (
+                        <span className="flex items-center gap-2">
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          Uploading {batchTestCases.length} test cases...
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-2">
+                          <FileText className="h-4 w-4" />
+                          Upload {batchTestCases.length} Test Cases
+                        </span>
+                      )}
+                    </Button>
                   ) : (
-                    "Create Test Case"
+                    <Button 
+                      type="submit" 
+                      disabled={isAddingTestCase || 
+                        (!newTestCase.input && !newTestCase.inputFile) || 
+                        (!newTestCase.output && !newTestCase.outputFile)}
+                    >
+                      {isAddingTestCase ? (
+                        <span className="flex items-center gap-2">
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          Creating...
+                        </span>
+                      ) : (
+                        "Create Test Case"
+                      )}
+                    </Button>
                   )}
-                </Button>
-              </DialogFooter>
-            </form>
-          </DialogContent>
-        </Dialog>
+                </DialogFooter>
+              </form>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
       {/* Test Cases Card */}
