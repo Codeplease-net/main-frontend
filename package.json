@@ -68,6 +68,7 @@
     "react-resizable-panels": "^2.1.4",
     "react-toastify": "^11.0.5",
     "recharts": "^2.13.3",
+    "sharp": "^0.33.5",
     "simplex-noise": "^4.0.3",
     "sonner": "^2.0.1",
     "sooner": "^1.1.4",
