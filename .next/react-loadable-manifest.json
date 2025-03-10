@@ -1,14 +1,18 @@
 {
   "components/auth/AuthClientWrapper.tsx -> @/api/Readfirebase": {
-    "id": "components/auth/AuthClientWrapper.tsx -> @/api/Readfirebase",
+    "id": 53280,
     "files": [
-      "static/chunks/_app-pages-browser_api_Readfirebase_ts.js"
+      "static/chunks/bc9e92e6-0091d55e14cd2479.js",
+      "static/chunks/d441faa4-2ca5b6e27abdff44.js",
+      "static/chunks/1990-5f53bcd71d986388.js",
+      "static/chunks/3132.8c9a0599fd482be4.js"
     ]
   },
   "components/auth/AuthClientWrapper.tsx -> firebase/firestore": {
-    "id": "components/auth/AuthClientWrapper.tsx -> firebase/firestore",
+    "id": 69842,
     "files": [
-      "static/chunks/_app-pages-browser_node_modules_firebase_firestore_dist_esm_index_esm_js.js"
+      "static/chunks/bc9e92e6-0091d55e14cd2479.js",
+      "static/chunks/1990-5f53bcd71d986388.js"
     ]
   }
 }

@@ -287,6 +287,15 @@
     "TernarySearchDesc": "Kỹ thuật tối ưu hóa chia không gian tìm kiếm thành ba phần"
   },
   "Playground": {
+    "solution": {
+      "titleFormat": "Lời giải cho {problemTitle}",
+      "hiddenTitle": "Lời giải bị ẩn",
+      "hiddenDescription": "Lời giải chứa các giải thích chi tiết và cách tiếp cận để giải quyết bài toán này. Xem trước khi thử giải bài toán có thể ảnh hưởng đến trải nghiệm học tập của bạn.",
+      "showButton": "Hiển thị lời giải",
+      "hideButton": "Ẩn lời giải",
+      "visibleStatus": "Đang hiển thị lời giải",
+      "noSolution": "Không có lời giải cho bài toán này."
+    },
     "statusText": "Trạng thái",
     "backToEditor": "Quay lại trình soạn thảo",
     "loadingSubmission": "Đang tải chi tiết bài nộp...",

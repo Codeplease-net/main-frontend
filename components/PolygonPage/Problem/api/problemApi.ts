@@ -17,7 +17,7 @@ export async function fetchProblemById(id: string): Promise<any> {
     const activeCategories = Object.entries(categoriesObj)
       .filter(([_, isActive]) => isActive === true)
       .map(([category]) => category);
-
+    console.log("data.title", (data.title == null || data.title === "") ? defaultProblem.content.title : data.title,)
     return {
       data: {
         id: docSnap.id,
@@ -25,9 +25,9 @@ export async function fetchProblemById(id: string): Promise<any> {
         categories: activeCategories, // Now returns array of active categories
         difficulty: data.difficulty || 0,
         content: {
-          title: data.title || defaultProblem.content.title,
-          description: data.description || defaultProblem.content.description,
-          solution: data.solution || defaultProblem.content.solution,
+          title: (data.title == null || data.title === "") ? defaultProblem.content.title : data.title,
+          description: (data.description == null || data.description === "") ? defaultProblem.content.description : data.description,
+          solution: (data.solution == null || data.solution === "") ? defaultProblem.content.solution : data.solution,        
         }
       }
     };

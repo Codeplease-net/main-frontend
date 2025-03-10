@@ -105,7 +105,10 @@ export function OutputSection({ problem, lang }: OutputSectionProps) {
             </div>
             )}
              {!loading && (<div className="flex flex-col h-[calc(100vh-4rem)] overflow-auto bg-dot-pattern p-6">
-              <RenderMathJaxText content={content.solution[lang]} />
+              <h1 className="text-2xl font-bold mb-2">Solution for {content.title[lang]}</h1>
+              <div className="prose prose-sm dark:prose-invert max-w-none">
+                <RenderMathJaxText content={content.solution[lang]} />
+              </div>
             </div>)}
           </TabsContent>
         </Tabs>

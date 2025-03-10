@@ -210,27 +210,29 @@ export function DescriptionTab({
         </Card>
 
         {/* Content Tabs Card */}
-        <Card className="shadow-md border-border/60">
+        <Card className="shadow-md border-border/60 overflow-hidden">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <CardHeader className="border-b pb-0 px-0 pt-0">
-              <TabsList className="w-full rounded-none grid grid-cols-2 bg-muted/50">
+            <CardHeader className="border-b pb-0 px-0 pt-0 bg-muted/30">
+              <TabsList className="w-full rounded-none bg-transparent grid grid-cols-2">
                 <TabsTrigger 
                   value="description" 
-                  className="data-[state=active]:bg-background rounded-none border-r border-border/30 py-3 data-[state=active]:shadow-none p-4"
+                  className="flex items-center gap-2 py-3.5 px-6 border-r border-border/30 relative rounded-none data-[state=active]:bg-card data-[state=active]:shadow-none transition-all duration-200"
                 >
-                  <div className="flex items-center gap-2">
-                    <FileText className="h-4 w-4" />
-                    Description
-                  </div>
+                  <FileText className="h-4 w-4" />
+                  <span>Description</span>
+                  {activeTab === 'description' && (
+                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary animate-fade-in" />
+                  )}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="solution"
-                  className="data-[state=active]:bg-background rounded-none py-3 data-[state=active]:shadow-none p-4"
+                  className="flex items-center gap-2 py-3.5 px-6 relative rounded-none data-[state=active]:bg-card data-[state=active]:shadow-none transition-all duration-200"
                 >
-                  <div className="flex items-center gap-2">
-                    <Lightbulb className="h-4 w-4" />
-                    Solution
-                  </div>
+                  <Lightbulb className="h-4 w-4" />
+                  <span>Solution</span>
+                  {activeTab === 'solution' && (
+                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary animate-fade-in" />
+                  )}
                 </TabsTrigger>
               </TabsList>
             </CardHeader>
@@ -238,41 +240,105 @@ export function DescriptionTab({
             <CardContent className="p-6">
               <TabsContent value="description" className="mt-0 space-y-4">
                 <div>
-                  <Label className="text-sm font-medium text-foreground flex items-center gap-2 mb-3">
-                    Problem Description
-                    <span className="text-xs font-normal text-muted-foreground px-2 py-0.5 bg-muted rounded-full">
-                      {currentLanguageName}
-                    </span>
-                  </Label>
+                  <div className="flex items-center justify-between mb-4">
+                    <Label className="text-sm font-medium text-foreground flex items-center gap-2">
+                      Problem Description
+                      <span className="text-xs font-normal text-muted-foreground px-2 py-0.5 bg-muted rounded-full">
+                        {currentLanguageName}
+                      </span>
+                    </Label>
+                    
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => window.open("/polygon/docs/mathjax", "_blank")}
+                      className="text-xs flex items-center gap-1.5 h-8 text-primary hover:text-primary hover:bg-primary/5 hover:border-primary/30 transition-all"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-function-square">
+                        <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+                        <path d="M9 17c2 0 2.8-1 2.8-2.8V10c0-2 1-3 3-3" />
+                        <path d="M9 11.2h5.7" />
+                      </svg>
+                      <span>MathJax Guide</span>
+                    </Button>
+                  </div>
+                  
+                  <div className="group border rounded-md border-border/60 overflow-hidden transition-all focus-within:ring-1 focus-within:ring-primary/30 focus-within:border-primary/50 hover:border-muted-foreground/30 bg-background">
+                    <div className="border-b border-border/40 px-3 py-1.5 bg-muted/30 flex items-center justify-between">
+                      <div className="text-xs text-muted-foreground">Edit Description</div>
+                      <div className="text-xs text-muted-foreground">
+                        <kbd className="px-1.5 py-0.5 bg-muted-foreground/10 rounded border border-muted-foreground/20 text-[10px] font-mono">Ctrl+Space</kbd>
+                        <span className="mx-1 text-[10px]">for suggestions</span>
+                      </div>
+                    </div>
                     <FitEditorLatex
                       minLine={15}
                       content={localContent.description}
                       onChange={(value) => handleContentChange("description", value)}
                     />
-                  <p className="text-xs text-muted-foreground mt-3 ml-1">
-                    Use Markdown and LaTeX for formatting. Include problem constraints and examples.
-                  </p>
+                  </div>
+                  
+                  <div className="flex items-center justify-between mt-3">
+                    <p className="text-xs text-muted-foreground ml-1">
+                      Use Markdown and LaTeX for formatting. Include problem constraints and examples.
+                    </p>
+                    
+                    <span className="text-xs text-muted-foreground px-2 py-0.5 bg-muted/50 rounded-md">
+                      {localContent.description.length} characters
+                    </span>
+                  </div>
                 </div>
               </TabsContent>
 
               <TabsContent value="solution" className="mt-0 space-y-4">
                 <div>
-                  <Label className="text-sm font-medium text-foreground flex items-center gap-2 mb-3">
-                    Problem Solution
-                    <span className="text-xs font-normal text-muted-foreground px-2 py-0.5 bg-muted rounded-full">
-                      {currentLanguageName}
-                    </span>
-                  </Label>
-                  <div className="border rounded-md border-border/60 overflow-hidden transition-all focus-within:ring-1 focus-within:ring-primary/30">
+                  <div className="flex items-center justify-between mb-4">
+                    <Label className="text-sm font-medium text-foreground flex items-center gap-2">
+                      Problem Solution
+                      <span className="text-xs font-normal text-muted-foreground px-2 py-0.5 bg-muted rounded-full">
+                        {currentLanguageName}
+                      </span>
+                    </Label>
+                    
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => window.open("/polygon/docs/mathjax", "_blank")}
+                      className="text-xs flex items-center gap-1.5 h-8 text-primary hover:text-primary hover:bg-primary/5 hover:border-primary/30 transition-all"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-function-square">
+                        <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+                        <path d="M9 17c2 0 2.8-1 2.8-2.8V10c0-2 1-3 3-3" />
+                        <path d="M9 11.2h5.7" />
+                      </svg>
+                      <span>MathJax Guide</span>
+                    </Button>
+                  </div>
+                  
+                  <div className="group border rounded-md border-border/60 overflow-hidden transition-all focus-within:ring-1 focus-within:ring-primary/30 focus-within:border-primary/50 hover:border-muted-foreground/30 bg-background">
+                    <div className="border-b border-border/40 px-3 py-1.5 bg-muted/30 flex items-center justify-between">
+                      <div className="text-xs text-muted-foreground">Edit Solution</div>
+                      <div className="text-xs text-muted-foreground">
+                        <kbd className="px-1.5 py-0.5 bg-muted-foreground/10 rounded border border-muted-foreground/20 text-[10px] font-mono">Ctrl+Space</kbd>
+                        <span className="mx-1 text-[10px]">for suggestions</span>
+                      </div>
+                    </div>
                     <FitEditorLatex
                       minLine={15}
                       content={localContent.solution}
                       onChange={(value) => handleContentChange("solution", value)}
                     />
                   </div>
-                  <p className="text-xs text-muted-foreground mt-3 ml-1">
-                    Explain the solution approach, algorithm, and complexity analysis.
-                  </p>
+                  
+                  <div className="flex items-center justify-between mt-3">
+                    <p className="text-xs text-muted-foreground ml-1">
+                      Explain the solution approach, algorithm, and complexity analysis.
+                    </p>
+                    
+                    <span className="text-xs text-muted-foreground px-2 py-0.5 bg-muted/50 rounded-md">
+                      {localContent.solution.length} characters
+                    </span>
+                  </div>
                 </div>
               </TabsContent>
             </CardContent>

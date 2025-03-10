@@ -7,7 +7,7 @@ import {
   sendPasswordResetEmail,
   sendEmailVerification 
 } from 'firebase/auth';
-import { doc, setDoc, query, collection, where, getDocs } from 'firebase/firestore';
+import { doc, setDoc, query, collection, where, getDocs, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '@/api/Readfirebase';
 import { KYCData } from '../types';
 import { validatePassword, validateBirthdate } from '../utils/validation';
@@ -173,7 +173,7 @@ export function useAuth() {
         country: kycData.country,
         birthdate: kycData.birthdate,
         emailVerified: false,
-        createdAt: new Date(),
+        createdAt: serverTimestamp(),
       });
       
       // Show success message

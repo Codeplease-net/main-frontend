@@ -131,7 +131,7 @@ export default function ProblemDescription({
             </TabsContent>
 
             <TabsContent value="solution" className="p-6 h-full m-0">
-                <FormattedSolution content={solutionDescription} />
+                <FormattedSolution title={title} content={solutionDescription} />
             </TabsContent>
 
             <TabsContent value="submissions" className="p-6 h-full m-0">

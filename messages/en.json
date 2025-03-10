@@ -279,6 +279,15 @@
     "TernarySearchDesc": "Optimization technique that reduces search space into three parts"
   },
   "Playground": {
+    "solution": {
+      "titleFormat": "Solution for {problemTitle}",
+      "hiddenTitle": "Solution Hidden",
+      "hiddenDescription": "The solution contains detailed explanations and approaches to solve this problem. Viewing it before attempting the problem might affect your learning experience.",
+      "showButton": "Show Solution",
+      "hideButton": "Hide Solution",
+      "visibleStatus": "Solution Visible",
+      "noSolution": "No solution available for this problem."
+    },
     "statusText": "Status",
     "backToEditor": "Back to Editor",
     "loadingSubmission": "Loading submission details...",
